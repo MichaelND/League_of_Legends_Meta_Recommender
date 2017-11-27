@@ -31,6 +31,9 @@ def make_requests(URL):
 		print('Limit has been reached. Sleeping...')
 		time.sleep(121)
 		r = requests.get(URL)  # Remake request
+	while r.status_code == 503:
+		r = requests.get(URL)  # Remake request
+
 	return r
 
 
@@ -55,6 +58,7 @@ def create_challenger_data():
 
 	# Next find challenger player account id ###
 	for n in CHALLENGER_NAMES:
+		print(n)
 		# Create URL
 		URL = RIOT_URL + 'summoner/v3/summoners/by-name/' + n + API_STR
 
@@ -70,7 +74,8 @@ def create_challenger_data():
 	# Write to CSV.
 	with open('data/challenger.csv', 'wb') as csvfile:
 		w = csv.writer(csvfile, delimiter=',')
-		for n in CHALLENGER_NAMES:
+		for c in challenger_players:
+			n = c['playerOrTeamName'].encode('utf-8').rstrip()
 			c_id = CHALLENGER_ACC_IDS[n]  # Get ID
 
 			# Write to CSV file.
@@ -86,43 +91,24 @@ def create_match_history_data():
 		w = csv.writer(csvfile, delimiter=',')
 
 		# Loop through challenger ids.
-		for c_acc_id in CHALLENGER_ACC_IDS.keys():
+		for key, value in CHALLENGER_ACC_IDS.items():
 			# Create URL.
-			URL = RIOT_URL + 'match/v3/matchlists/by-account/' + str(c_acc_id) + '/recent'
+			URL = RIOT_URL + 'match/v3/matchlists/by-account/' + str(value) + '/recent'
 
 			# Make request.
 			r = make_requests(URL)
+			print(URL)
 
 			# Load data.
 			match_history_data = json.loads(r.content.decode('utf-8'))
+			print(match_history_data)
 			recent_matches = match_history_data['matches']
+			print(recent_matches)
 
 			# Append gameId to list.
 			GAME_IDS.append(str([recent_matches['gameId']]))
 
 			w.writerow([c_acc_id] + [recent_matches['lane']] + [str(recent_matches['gameId'])] + [str(recent_matches['champion'])] + [str(recent_matches['queue'])] + [recent_matches['role']] + [str(recent_matches['timestamp'])])
-	
-
-def create_match_data():
-	print('Creating match data...')
-	
-	# Write to CSV.
-	with open('data/match.csv', 'wb') as csvfile:
-		w = csv.writer(csvfile, delimiter=',')
-
-		# Loop throuh game ids.
-		for g_id in GAME_IDS:
-			# Create URL.
-			URL = RIOT_URL + 'match/v3/matches/' + g_id
-
-			# Make request.
-			r = make_requests(URL)
-
-			# Load data.
-			match_data = json.loads(r.content.decode('utf-8'))
-
-			w.writerow( [g_id] + )
-
 
 
 # CSV FORMAT: champion_name(str),key(int),image_name(str)
@@ -150,8 +136,7 @@ def create_champion_data():
 if __name__ == '__main__':
 	create_challenger_data()
 	create_match_history_data()
-	create_match_data()
-	# create_champion_data()
+	create_champion_data()
 
 	sys.exit(0)
 
