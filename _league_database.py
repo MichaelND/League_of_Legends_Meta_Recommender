@@ -81,23 +81,23 @@ class _league_database():
 
 	def set_champion(self, champion_key, data):
 		champion_key = int(champion_key)
-		if self.players.get(champion_key) is None:
-			self.players[champion_key] = {}
+		if self.champions.get(champion_key) is None:
+			self.champions[champion_key] = {}
 
-		self.players[champion_key]['c_name']	= data['c_name']
-		self.players[champion_key]['image']		= data['image']
+		self.champions[champion_key]['c_name']	= data['c_name']
+		self.champions[champion_key]['image']	= data['image']
 
 	def set_match_history(self, account_id, data):
 		account_id = int(account_id)
-		if self.players.get(account_id) is None:
-			self.players[account_id] = {}
+		if self.matches.get(account_id) is None:
+			self.matches[account_id] = {}
 
-		self.players[account_id]['lane'] 		= data['lane']
-		self.players[account_id]['gameId'] 		= data['gameId']
-		self.players[account_id]['champion'] 	= data['champion']
-		self.players[account_id]['queue'] 		= data['queue']
-		self.players[account_id]['role'] 		= data['role']
-		self.players[account_id]['timestamp'] 	= data['timestamp']
+		self.matches[account_id]['lane'] 		= data['lane']
+		self.matches[account_id]['gameId'] 		= data['gameId']
+		self.matches[account_id]['champion'] 	= data['champion']
+		self.matches[account_id]['queue'] 		= data['queue']
+		self.matches[account_id]['role'] 		= data['role']
+		self.matches[account_id]['timestamp'] 	= data['timestamp']
 
 	def delete_player(self, account_id):
 		self.players.pop(account_id)
@@ -106,7 +106,7 @@ class _league_database():
 		self.champions.pop(champion_key)
 
 	def delete_match_history(self, account_id):
-		self.match_history.pop(account_id)
+		self.matches.pop(account_id)
 
 if __name__ == "__main__":
 	ldb = _league_database()
