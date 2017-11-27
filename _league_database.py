@@ -7,39 +7,39 @@
 class _league_database():
 	def __init__(self):
 		# stores the player's wins, losses, name, and lp based off of the account id
-		self.players 	= {} 
+		self.players 	= {}
 		# stores the champion name and image based off of the champion key
-		self.champions 	= {} 
+		self.champions 	= {}
 		# stores the user's input for whether a champion is meta
 		self.matches 	= {}
 		account_id 		= 0
 		champion_key 	= 0
 
-	def load_player(self, players_file):
+	def load_players(self, players_file):
 		for line in open(players_file):
 			# store the data from the player file into dictionary
 
 			values 		= line.split(",")
-			account_id 	= values[3].rstrip('\n')
+			account_id 	= int(values[3].rstrip('\n\r'))
 
 			p 			= {}
-			p['wins'] 	= int(values[0].rstrip('\n'))
-			p['losses'] = int(values[1].rstrip('\n'))
-			p['name'] 	= values[2].rstrip('\n')
-			p['lp'] 	= int(values[4].rstrip('\n'))
+			p['wins'] 	= int(values[0].rstrip('\n\r'))
+			p['losses'] = int(values[1].rstrip('\n\r'))
+			p['name'] 	= values[2].rstrip('\n\r')
+			p['lp'] 	= int(values[4].rstrip('\n\r'))
 
 			self.players[account_id] = p
 
-	def load_champion(self, champions_file):
+	def load_champions(self, champions_file):
 		for line in open(champions_file):
 			# store the data from the player file into dictionary
 
 			values 			= line.split(",")
-			champion_key 	= values[1].rstrip('\n')
+			champion_key 	= int(values[1].rstrip('\n\r'))
 
 			c 				= {}
-			c['c_name'] 	= values[0].rstrip('\n')
-			c['image'] 		= values[2].rstrip('\n')
+			c['c_name'] 	= values[0].rstrip('\n\r')
+			c['image'] 		= values[2].rstrip('\n\r')
 
 			self.champions[champion_key] = c
 
@@ -48,26 +48,44 @@ class _league_database():
 			# store the data from the player file into dictionary
 
 			values = line.split(",")
-			account_id = values[0].rstrip('\n')
+			account_id = int(values[0].rstrip('\n\r'))
 
 			m 				= {}
-			m['lane'] 		= values[1].rstrip('\n')
-			m['gameId'] 	= values[2].rstrip('\n')
-			m['champion'] 	= values[3].rstrip('\n')
-			m['queue'] 		= values[4].rstrip('\n')
-			m['role'] 		= values[5].rstrip('\n')
-			m['timestamp'] 	= values[6].rstrip('\n')
+			m['lane'] 		= values[1].rstrip('\n\r')
+			m['gameId'] 	= values[2].rstrip('\n\r')
+			m['champion'] 	= values[3].rstrip('\n\r')
+			m['queue'] 		= values[4].rstrip('\n\r')
+			m['role'] 		= values[5].rstrip('\n\r')
+			m['timestamp'] 	= values[6].rstrip('\n\r')
 
-			self.matches[account_id] = m
+			try:
+				self.matches[account_id].append(m)
+			except KeyError:
+				self.matches[account_id] = []
 
 	def get_player(self, account_id):
-		return self.players.get[account_id]
+		retVal = {}
+		try:
+			retVal = self.players.get(int(account_id))
+		except KeyError:
+			retVal = None
+		return retVal
 
 	def get_champion(self, champion_key):
-		return self.champions.get[champion_key]
+		retVal = {}
+		try:
+			retVal = self.champions.get(int(champion_key))
+		except KeyError:
+			retVal = None
+		return retVal
 
 	def get_match_history(self, account_id):
-		return self.match_history.get[account_id]
+		retVal = {}
+		try:
+			retVal = self.matches.get(int(account_id))
+		except KeyError:
+			retVal = None
+		return retVal
 
 	def set_player(self, account_id, data):
 		account_id = int(account_id)
@@ -108,9 +126,15 @@ class _league_database():
 	def delete_match_history(self, account_id):
 		self.matches.pop(account_id)
 
+	def delete_all_dictionaries(self):
+		self.players 	= {} 
+		self.champions 	= {}
+		self.matches 	= {}
+
+
 if __name__ == "__main__":
 	ldb = _league_database()
-	ldb.load_player('data/challenger.csv')
-	ldb.load_champion('data/champions.csv')
+	ldb.load_players('data/challenger.csv')
+	ldb.load_champions('data/champions.csv')
 	ldb.load_match_history('data/match_history.csv')
 
