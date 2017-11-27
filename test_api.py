@@ -72,51 +72,37 @@ class TestLeageDatabase(unittest.TestCase):
 	def test_get_match_history(self):
 			self.reset_data()
 			match_history = self.ldb.get_match_history(ACC_ID)
-			# self.assertEquals(match_history, 3.945731303772336)
-			# match_history = self.ldb.get_match_history(110)
-			# self.assertEquals(match_history, 4.234957020057307)
-			# match_history = self.ldb.get_match_history(1)
-			# self.assertEquals(match_history, 4.146846413095811)
+			self.assertEquals(match_history[0]['lane'], 'BOTTOM')
+			self.assertEquals(match_history[0]['gameId'], 2656410494)
+			self.assertEquals(match_history[0]['champion'], 429)
+			self.assertEquals(match_history[0]['queue'], 420)
+			self.assertEquals(match_history[0]['role'], 'DUO_CARRY')
+			self.assertEquals(match_history[0]['timestamp'], 1511683429568)
 
-	# def test_get_highest_rated_movie_1(self):
-	#         self.reset_data()
-	#         hrm_mid = self.ldb.get_highest_rated_movie()
-	#         hrm_rating = self.ldb.get_rating(hrm_mid)
-	#         hrm = self.ldb.get_movie(hrm_mid)
-	#         hrm_name = hrm[0]
-	#         self.assertEquals(hrm_mid, 787)
-	#         self.assertEquals(hrm_name, 'Gate of Heavenly Peace, The (1995)')
-	#         self.assertEquals(hrm_rating, 5.0)
+	def test_set_match_history(self):
+			self.reset_data()
+			match = self.ldb.get_match_history(ACC_ID)[0]
+			match['lane'] = 'odyssey'
+			match['gameId'] = 1337
+			match['champion'] = 22
+			match['queue'] = 717
+			match['role'] = 'switch'
+			match['timestamp'] = 1941782
+			self.ldb.set_match_history(ACC_ID, match, 0)
+			match = self.ldb.get_match_history(ACC_ID)
+			self.assertEquals(match[0]['lane'], 'odyssey')
+			self.assertEquals(match[0]['gameId'], 1337)
+			self.assertEquals(match[0]['champion'], 22)
+			self.assertEquals(match[0]['queue'], 717)
+			self.assertEquals(match[0]['role'], 'switch')
+			self.assertEquals(match[0]['timestamp'], 1941782)
 
-	# def test_set_user_movie_rating_1(self):
-	#         self.reset_data()
-	#         self.ldb.set_user_movie_rating(41, 787, 2)
-	#         rating = self.ldb.get_rating(787)
-	#         self.assertEquals(rating, 4.25)
+	def test_delete_match_history(self):
+			self.reset_data()
+			self.ldb.delete_match_history(ACC_ID)
+			match = self.ldb.get_match_history(ACC_ID)
+			self.assertEquals(match, None)
 
-	# def test_set_user_movie_rating_2(self):
-	#         self.reset_data()
-	#         self.ldb.set_user_movie_rating(41, 787, 2)
-	#         self.ldb.set_user_movie_rating(101, 787, 4)
-	#         rating = self.ldb.get_rating(787)
-	#         self.assertEquals(rating, 4.2)
-
-	# def test_set_and_get_movie_ratings(self):
-	#         self.reset_data()
-	#         self.ldb.set_user_movie_rating(41, 787, 2)
-	#         self.ldb.set_user_movie_rating(101, 787, 4)
-	#         hrm_mid = self.ldb.get_highest_rated_movie()
-	#         hrm_rating = self.ldb.get_rating(hrm_mid)
-	#         hrm = self.ldb.get_movie(hrm_mid)
-	#         hrm_name = hrm[0]
-	#         self.assertEquals(hrm_mid, 989)
-	#         self.assertEquals(hrm_name, 'Schlafes Bruder (Brother of Sleep) (1995)')
-	#         self.assertEquals(hrm_rating, 5.0)
-
-	# def test_get_user_movie_rating(self):
-	#         self.reset_data()
-	#         rating = self.ldb.get_user_movie_rating(6030, 32)
-	#         self.assertEquals(rating, 5)
 
 if __name__ == "__main__":
 	unittest.main()

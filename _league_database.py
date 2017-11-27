@@ -52,16 +52,17 @@ class _league_database():
 
 			m 				= {}
 			m['lane'] 		= values[1].rstrip('\n\r')
-			m['gameId'] 	= values[2].rstrip('\n\r')
-			m['champion'] 	= values[3].rstrip('\n\r')
-			m['queue'] 		= values[4].rstrip('\n\r')
+			m['gameId'] 	= int(values[2].rstrip('\n\r'))
+			m['champion'] 	= int(values[3].rstrip('\n\r'))
+			m['queue'] 		= int(values[4].rstrip('\n\r'))
 			m['role'] 		= values[5].rstrip('\n\r')
-			m['timestamp'] 	= values[6].rstrip('\n\r')
+			m['timestamp'] 	= int(values[6].rstrip('\n\r'))
 
 			try:
 				self.matches[account_id].append(m)
 			except KeyError:
 				self.matches[account_id] = []
+				self.matches[account_id].append(m)
 
 	def get_player(self, account_id):
 		retVal = {}
@@ -105,17 +106,17 @@ class _league_database():
 		self.champions[champion_key]['c_name']	= data['c_name']
 		self.champions[champion_key]['image']	= data['image']
 
-	def set_match_history(self, account_id, data):
+	def set_match_history(self, account_id, data, gameIdx):
 		account_id = int(account_id)
 		if self.matches.get(account_id) is None:
 			self.matches[account_id] = {}
 
-		self.matches[account_id]['lane'] 		= data['lane']
-		self.matches[account_id]['gameId'] 		= data['gameId']
-		self.matches[account_id]['champion'] 	= data['champion']
-		self.matches[account_id]['queue'] 		= data['queue']
-		self.matches[account_id]['role'] 		= data['role']
-		self.matches[account_id]['timestamp'] 	= data['timestamp']
+		self.matches[account_id][gameIdx]['lane'] 		= data['lane']
+		self.matches[account_id][gameIdx]['gameId'] 	= data['gameId']
+		self.matches[account_id][gameIdx]['champion'] 	= data['champion']
+		self.matches[account_id][gameIdx]['queue'] 		= data['queue']
+		self.matches[account_id][gameIdx]['role'] 		= data['role']
+		self.matches[account_id][gameIdx]['timestamp'] 	= data['timestamp']
 
 	def delete_player(self, account_id):
 		self.players.pop(account_id)
