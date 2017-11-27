@@ -58,7 +58,7 @@ class _league_database():
 			m['role'] 		= values[5].rstrip('\n')
 			m['timestamp'] 	= values[6].rstrip('\n')
 
-			self.champions[account_id] = m
+			self.matches[account_id] = m
 
 	def get_player(self, account_id):
 		return self.players.get[account_id]
@@ -113,3 +113,4 @@ if __name__ == "__main__":
 	ldb.load_player('data/challenger.csv')
 	ldb.load_champion('data/champions.csv')
 	ldb.load_match_history('data/match_history.csv')
+
