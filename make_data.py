@@ -19,7 +19,6 @@ RIOT_URL	= 'https://' + REGION + '.api.riotgames.com/lol/'
 
 CHALLENGER_NAMES 	= []
 CHALLENGER_ACC_IDS	= {}
-GAME_IDS			= []
 
 
 def make_requests(URL):
@@ -86,29 +85,31 @@ def create_challenger_data():
 def create_match_history_data():
 	print('Creating match history data...')
 
+	# MANUAL CHANGE: If Challenger csv has been made.
+	with open('data/challenger.csv', 'rb') as csvfile:
+		r = csv.reader(csvfile, delimiter=',')
+		for row in r:
+			CHALLENGER_ACC_IDS[row[2]] = row[3]
+
 	# Write to CSV.
 	with open('data/match_history.csv', 'wb') as csvfile:
 		w = csv.writer(csvfile, delimiter=',')
 
 		# Loop through challenger ids.
-		for key, value in CHALLENGER_ACC_IDS.items():
+		for c_acc_name, c_acc_id in CHALLENGER_ACC_IDS.items():
 			# Create URL.
-			URL = RIOT_URL + 'match/v3/matchlists/by-account/' + str(value) + '/recent'
+			URL = RIOT_URL + 'match/v3/matchlists/by-account/' + str(c_acc_id) + '/recent' + API_STR
 
 			# Make request.
 			r = make_requests(URL)
-			print(URL)
 
 			# Load data.
 			match_history_data = json.loads(r.content.decode('utf-8'))
-			print(match_history_data)
 			recent_matches = match_history_data['matches']
-			print(recent_matches)
 
-			# Append gameId to list.
-			GAME_IDS.append(str([recent_matches['gameId']]))
-
-			w.writerow([c_acc_id] + [recent_matches['lane']] + [str(recent_matches['gameId'])] + [str(recent_matches['champion'])] + [str(recent_matches['queue'])] + [recent_matches['role']] + [str(recent_matches['timestamp'])])
+			# Loop through games.
+			for i in range(len(recent_matches)):
+				w.writerow([c_acc_id] + [recent_matches[i]['lane']] + [str(recent_matches[i]['gameId'])] + [str(recent_matches[i]['champion'])] + [str(recent_matches[i]['queue'])] + [recent_matches[i]['role']] + [str(recent_matches[i]['timestamp'])])
 
 
 # CSV FORMAT: champion_name(str),key(int),image_name(str)
@@ -134,9 +135,9 @@ def create_champion_data():
 
 
 if __name__ == '__main__':
-	create_challenger_data()
+	# create_challenger_data()
 	create_match_history_data()
-	create_champion_data()
+	# create_champion_data()
 
 	sys.exit(0)
 
