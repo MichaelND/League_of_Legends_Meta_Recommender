@@ -16,12 +16,14 @@ class _league_database():
 		champion_key 	= 0
 
 	def load_players(self, players_file):
-		for line in open(players_file):
+		f = open(players_file, "r")
+		for line in f:
 			# store the data from the player file into dictionary
 
 			values 		= line.split(",")
 			account_id 	= int(values[3].rstrip('\n\r'))
 
+			# Create input dictionary.
 			p 			= {}
 			p['wins'] 	= int(values[0].rstrip('\n\r'))
 			p['losses'] = int(values[1].rstrip('\n\r'))
@@ -29,27 +31,33 @@ class _league_database():
 			p['lp'] 	= int(values[4].rstrip('\n\r'))
 
 			self.players[account_id] = p
+		f.close()
 
 	def load_champions(self, champions_file):
-		for line in open(champions_file):
-			# store the data from the player file into dictionary
+		f = open(champions_file, "r")
+		for line in f:
+			# store the data from the champions file into dictionary
 
 			values 			= line.split(",")
 			champion_key 	= int(values[1].rstrip('\n\r'))
 
+			# Create input dictionary.
 			c 				= {}
 			c['c_name'] 	= values[0].rstrip('\n\r')
 			c['image'] 		= values[2].rstrip('\n\r')
 
 			self.champions[champion_key] = c
+		f.close()
 
 	def load_match_history(self, match_file):
-		for line in open(match_file):
-			# store the data from the player file into dictionary
+		f = open(match_file, "r")
+		for line in f:
+			# store the data from the match_history file into dictionary
 
 			values = line.split(",")
 			account_id = int(values[0].rstrip('\n\r'))
 
+			# Create input dictionary.
 			m 				= {}
 			m['lane'] 		= values[1].rstrip('\n\r')
 			m['gameId'] 	= int(values[2].rstrip('\n\r'))
@@ -63,6 +71,7 @@ class _league_database():
 			except KeyError:
 				self.matches[account_id] = []
 				self.matches[account_id].append(m)
+		f.close()
 
 	def get_player(self, account_id):
 		retVal = {}
@@ -93,6 +102,7 @@ class _league_database():
 		if self.players.get(account_id) is None:
 			self.players[account_id] = {}
 
+		# Update data.
 		self.players[account_id]['wins'] 	= data['wins']
 		self.players[account_id]['losses'] 	= data['losses']
 		self.players[account_id]['name'] 	= data['name']
@@ -103,6 +113,7 @@ class _league_database():
 		if self.champions.get(champion_key) is None:
 			self.champions[champion_key] = {}
 
+		# Update data.
 		self.champions[champion_key]['c_name']	= data['c_name']
 		self.champions[champion_key]['image']	= data['image']
 
@@ -111,6 +122,7 @@ class _league_database():
 		if self.matches.get(account_id) is None:
 			self.matches[account_id] = {}
 
+		# Update data.
 		self.matches[account_id][gameIdx]['lane'] 		= data['lane']
 		self.matches[account_id][gameIdx]['gameId'] 	= data['gameId']
 		self.matches[account_id][gameIdx]['champion'] 	= data['champion']
