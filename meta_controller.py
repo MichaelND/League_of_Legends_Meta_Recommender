@@ -10,7 +10,7 @@ from _league_database import _league_database
 
 class MetaController(object):
 
-	def __init__(self, ldb):
+    def __init__(self, ldb):
         self.ldb  = ldb
 
     def GET(self):
