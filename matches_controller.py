@@ -8,22 +8,22 @@ import cherrypy
 import re, json
 
 class MatchesController(object):
-	def __init__(self, ldb):
-		self.ldb = ldb
+    def __init__(self, ldb):
+        self.ldb = ldb
 
-	def GET(self):
-		output = {'result' : 'success'}
-		return json.dumps(output)
+    def GET(self):
+        output = {'result' : 'success'}
+        return json.dumps(output)
 
-	def GET_KEY(self, key):
-		output = {'result' : 'success'}
-		return json.dumps(output)
+    def GET_KEY(self, key):
+        output = {'result' : 'success'}
+        return json.dumps(output)
 
-	def POST_KEY(self, key):
-		output = {'result' : 'success'}
-		return json.dumps(output)
+    def POST_KEY(self, key):
+        output = {'result' : 'success'}
+        return json.dumps(output)
 
-	def DELETE_KEY(self, key):
-		output = {'result' : 'success'}
-		return json.dumps(output)
+    def DELETE_KEY(self, key):
+        output = {'result' : 'success'}
+        return json.dumps(output)
 

@@ -73,7 +73,7 @@ def start_service():
     #/meta/
     dispatcher.connect('meta_get', '/meta/', controller = meta_controller, action = 'GET', conditions = dict(method=['GET']))
     #/meta/:key
-    dispatcher.connect('meta_get_lane', '/meta/:key', controller = meta_controller, action = 'GET', conditions = dict(method=['GET']))
+    dispatcher.connect('meta_get_lane', '/meta/:key', controller = meta_controller, action = 'GET_KEY', conditions = dict(method=['GET']))
     
 
     #set up server
