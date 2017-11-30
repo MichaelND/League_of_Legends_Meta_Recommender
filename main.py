@@ -1,56 +1,51 @@
-# Michael Wang
-# October 28, 2017
-# CherryPy
+##############################
+# Anthony Luc, Michael Wang
+# ParadigmsFinal
+# December 1, 2017
+##############################
 
 import cherrypy
-from _movie_database import _movie_database
-from movies_cont import MovieController
-from users_cont import UserController
-from recommend_cont import RecommendationController
-from ratings_cont import RatingController
-from reset_cont import ResetController
-
+from _league_database import _league_database
+from matches_controller import MatchesController
+from player_controller import PlayerController
+from meta_controller import MetaController
+from champion_controller import ChampionController
 
 def start_service():
     dispatcher = cherrypy.dispatch.RoutesDispatcher()
-    myd = _movie_database()
-    movie_controller = MovieController(myd)
-    user_controller = UserController(myd)
-    recommendation_controller = RecommendationController(myd)
-    rating_controller = RatingController(myd)
-    reset_controller = ResetController(myd)
+    ldb = _league_database()
+    matches_controller = MatchesController(ldb)
+    player_controller = PlayerController(ldb)
+    meta_controller = MetaController(ldb)
+    champion_controller = ChampionController(ldb)
 
-    #movies
-    dispatcher.connect('movie_get', '/movies/', controller = movie_controller, action = 'GET', conditions = dict(method=['GET']))
-    dispatcher.connect('movie_post', '/movies/', controller = movie_controller, action = 'POST', conditions = dict(method=['POST']))
-    dispatcher.connect('movie_delete', '/movies/', controller = movie_controller, action = 'DELETE', conditions = dict(method=['DELETE']))
+    #player
+    dispatcher.connect('player_get', '/players/', controller = player_controller, action = 'GET', conditions = dict(method=['GET']))
+    dispatcher.connect('player_post', '/players/', controller = player_controller, action = 'POST', conditions = dict(method=['POST']))
+    #player:acc_id
+    dispatcher.connect('player_get_acc_id', '/players/:acc_id', controller = player_controller, action = 'GET', conditions = dict(method=['GET']))
+    dispatcher.connect('player_delete_acc_id', '/players/:acc_id', controller = player_controller, action = 'DELETE', conditions = dict(method=['DELETE']))
+
+    #matches
+    dispatcher.connect('matches_get', '/matches/', controller = matches_controller, action = 'GET', conditions = dict(method=['GET']))
+    #matches/:acc_id
+    dispatcher.connect('matches_get_acc_id', '/matches/:acc_id', controller = matches_controller, action = 'GET', conditions = dict(method=['GET']))
+    dispatcher.connect('matches_post_acc_id', '/matches/:acc_id', controller = matches_controller, action = 'POST', conditions = dict(method=['POST']))
+    dispatcher.connect('matches_delete_acc_id', '/matches/:acc_id', controller = matches_controller, action = 'DELETE', conditions = dict(method=['DELETE']))
+
+    #champion
+    dispatcher.connect('champion_get', '/champion/', controller = champion_controller, action = 'GET', conditions = dict(method=['GET']))
+    dispatcher.connect('champion_post', '/champion/', controller = champion_controller, action = 'POST', conditions = dict(method=['POST']))
+    #champion/:champ_id
+    dispatcher.connect('champion_get_champ_id', '/champion/:champ_id', controller = champion_controller, action = 'GET', conditions = dict(method=['GET']))
+    #champion/:meta_vote
+    dispatcher.connect('champion_put_meta_vote', '/champion/:meta_vote', controller = champion_controller, action = 'PUT', conditions = dict(method=['PUT']))
+
+    #meta
+    dispatcher.connect('meta_get', '/meta/', controller = meta_controller, action = 'GET', conditions = dict(method=['GET']))
+    #meta/:lane
+    dispatcher.connect('meta_get_lane', '/meta/:lane', controller = meta_controller, action = 'GET', conditions = dict(method=['GET']))
     
-    #movies:key
-    dispatcher.connect('movie_get_key', '/movies/:key', controller = movie_controller, action = 'GET', conditions = dict(method=['GET']))
-    dispatcher.connect('movie_put_key', '/movies/:key', controller = movie_controller, action = 'PUT', conditions = dict(method=['PUT']))
-    dispatcher.connect('movie_delete_key', '/movies/:key', controller = movie_controller, action = 'DELETE', conditions = dict(method=['DELETE']))
-
-    #users
-    dispatcher.connect('user_get', '/users/', controller = user_controller, action = 'GET', conditions = dict(method=['GET']))
-    dispatcher.connect('user_post', '/users/', controller = user_controller, action = 'POST', conditions = dict(method=['POST']))
-    dispatcher.connect('user_delete', '/users/', controller = user_controller, action = 'DELETE', conditions = dict(method=['DELETE']))
-    
-    #users:key
-    dispatcher.connect('user_get_key', '/users/:key', controller = user_controller, action = 'GET', conditions = dict(method=['GET']))
-    dispatcher.connect('user_put', '/users/:key', controller = user_controller, action = 'PUT', conditions = dict(method=['PUT']))
-    dispatcher.connect('user_delete_key', '/users/:key', controller = user_controller, action = 'DELETE', conditions = dict(method=['DELETE']))
-
-    #Recommendataions
-    dispatcher.connect('recommendation_delete', '/recommendations/', controller = recommendation_controller, action = 'DELETE', conditions = dict(method=['DELETE']))
-    dispatcher.connect('recommendation_get_key', '/recommendations/:key', controller = recommendation_controller, action = 'GET', conditions = dict(method=['GET']))
-    dispatcher.connect('recommendation_put_key', '/recommendations/:key', controller = recommendation_controller, action = 'PUT', conditions = dict(method=['PUT']))
-
-    #Ratings
-    dispatcher.connect('rating_get_key', '/ratings/:key', controller = rating_controller, action = 'GET', conditions = dict(method=['GET']))
-
-    #Reset
-    dispatcher.connect('reset_put', '/reset/', controller = reset_controller, action = 'PUT', conditions = dict(method=['PUT']))
-    dispatcher.connect('reset_put_key', '/reset/:key', controller = reset_controller, action = 'PUT', conditions = dict(method=['PUT']))
 
     #set up server
     conf = {'global':
