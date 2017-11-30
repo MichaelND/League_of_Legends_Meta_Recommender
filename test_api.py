@@ -10,6 +10,10 @@ import unittest
 ACC_ID 		= 234873632
 CHAMP_ID 	= 432
 
+# Anthony's NOTE:
+# TODO:
+#     gets that return NONE
+
 class TestLeageDatabase(unittest.TestCase):
 	ldb = _league_database()
 
