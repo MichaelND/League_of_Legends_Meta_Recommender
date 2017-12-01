@@ -15,12 +15,18 @@ class MetaController(object):
 
     def GET(self):
         output = {}
+
+        #TODO: Implementation on API side
         output['result'] = 'success'
 
         return json.dumps(output)
 
     def GET_KEY(self, key):
         output = {}
-        output['result'] = 'success'
 
+        key = int(key)
+
+        #TODO: Implementation on API side
+        output['result'] = 'success'
+        
         return json.dumps(output)

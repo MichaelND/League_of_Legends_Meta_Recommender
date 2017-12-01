@@ -145,6 +145,12 @@ class _league_database():
 		self.matches 	= {}
 
 
+	# def set_meta(self):
+
+	# def get_all_meta(self):
+
+	# def get_lane_meta(self):
+
 if __name__ == "__main__":
 	ldb = _league_database()
 	ldb.load_players('data/challenger.csv')

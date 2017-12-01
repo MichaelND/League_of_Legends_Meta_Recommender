@@ -28,7 +28,7 @@ MATCH_HISTORY_DATA_PATH     = 'data/match_history.csv'
 #*******************************************************
 def init_db(ldb):
     ldb.load_players(PLAYER_DATA_PATH)
-    ldb.load_champions(PLAYER_DATA_PATH)
+    ldb.load_champions(CHAMPION_DATA_PATH)
     ldb.load_match_history(MATCH_HISTORY_DATA_PATH)
 
 #*******************************************************
