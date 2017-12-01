@@ -14,6 +14,7 @@ class MetaController(object):
         self.ldb  = ldb
 
     def GET(self):
+        #This function will make a request to our webservice to get the meta for each lane.
         output = {}
 
         #TODO: Implementation on API side
@@ -22,6 +23,7 @@ class MetaController(object):
         return json.dumps(output)
 
     def GET_KEY(self, key):
+        #This function will make a request to our webservice to get the meta for a specific lane. 
         output = {}
 
         key = int(key)

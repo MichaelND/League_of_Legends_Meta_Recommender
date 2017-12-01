@@ -15,4 +15,12 @@ To test our OO API for November 27, simply run python3 test_api.py. This will te
 A link to our GitHub is provided here as well: https://github.com/MichaelND/ParadigmsFinal
 
 ## Milestone 3
-TODO
+We are using port number 51049 for our webservice. The user will be able to use our webservice to obtain information about champions, players, matches, and also the meta. For the players side, a user can send a get request to the webservice with and without a key to specify a challenger player based on their account id or all the challenger players information. The user can post a new challenger player to the webservice if a new player were to enter challenger for example. In addition when a player falls out of challenger, the user can delete the challenger player by sending a delete request with the account id as the key. The user can also obtain the match history information of all the challenger players by making a get request or a specific challenger player with a get request with the account id. Let's say that a challenger player plays a new match and the user wants to record that information. They can by making a post request! In addition, you can only have 20 matches in the match history so a user can then delete a match by sending a delete request to the webservice. The user has access to the database if they want to retrieve champions and also update an existing champion. Ultimately, the user will be able to vote on a champion based on whether they think it is meta and then get what champions are meta based on a certain lane or for everylane. The user will be able to learn more about what champions are best or most winning in challenger for each lane and then constantly be updated by the challenger players as they play matches. 
+
+Note: We are currently in progress for adding the meta last feature for our webservice where the meta data can be pulled from. This is because we weren't sure whether this milestone allowed for us to update our object oriented api and so we added the webservice side to our previous existing object oriented api and these features are being tested for this milestone. 
+
+Ultimately, we want our webservice to improve player's awareness about the current meta based off of challenger players by making get requests and also updates of their own to our webservice. On top of this features, the user will be able to obtain interact with and obtain information and match history about challenger league players as well as different champions. 
+
+To test our webservice for November 30, simply run python3 test_ws.py. This will send multiple get, put, post, and delete requests to our webservice to show that it works.
+
+A link to our GitHub is provided here as well: https://github.com/MichaelND/ParadigmsFinal
