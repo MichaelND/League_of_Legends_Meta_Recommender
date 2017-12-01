@@ -17,16 +17,11 @@ CHAMPION_URL 			= SITE_URL + '/champion/'
 MATCH_HISTORY_URL 		= SITE_URL + '/matches/'
 META_URL 				= SITE_URL + '/meta/'
 RESET_URL 				= SITE_URL + '/reset/'
-RESET_PLAYER_URL 		= RESET_URL + '/players/'
-RESET_MATCH_HISTORY_URL = RESET_URL + '/matches/'
-RESET_CHAMPION_URL 		= RESET_URL + '/champion/'
-
+# RESET_PLAYER_URL 		= RESET_URL + '/players/'
+# RESET_MATCH_HISTORY_URL = RESET_URL + '/matches/'
+# RESET_CHAMPION_URL 		= RESET_URL + '/champion/'
 
 class TestWebservice(unittest.TestCase):
-    def reset_data(self):
-        m = {}
-        r = requests.put(RESET_URL, data = json.dumps(m))
-
     def is_json(self, resp):
         try:
             json.loads(resp)
@@ -34,6 +29,12 @@ class TestWebservice(unittest.TestCase):
         except ValueError:
             return False
 
+    # /reset/ unit test
+    def reset_data(self):
+        m = {}
+        r = requests.put(RESET_URL, data = json.dumps(m))
+
+    # /players/ unit test
     def test_players_get(self):
         #get without account id
         self.reset_data()
@@ -77,27 +78,130 @@ class TestWebservice(unittest.TestCase):
         account_id = 234873632
 
         d = {}
-        r = requests.delete(PLAYERS_URL + account_id, data = json.dumps(d))
+        r = requests.delete(PLAYERS_URL + str(account_id), data = json.dumps(d))
         self.assertTrue(self.is_json(r.content.decode('utf-8')))
         resp = json.loads(r.content.decode('utf-8'))
         self.assertEqual(resp['result'], 'success')
 
-    #     r = requests.get(self.MOVIES_URL + str(movie_id))
-    #     self.assertTrue(self.is_json(r.content.decode('utf-8')))
-    #     resp = json.loads(r.content.decode('utf-8'))
-    #     self.assertEqual(resp['result'], 'error')
-    #     #self.assertEqual(resp['message'], 'movie not found')
+        r = requests.get(PLAYERS_URL + str(account_id))
+        self.assertTrue(self.is_json(r.content.decode('utf-8')))
+        resp = json.loads(r.content.decode('utf-8'))
+        self.assertEqual(resp['result'], 'error')
 
-    # /players/
+    # /matches/ unit test
+    def test_matches_get(self):
+        #get without account id
+        self.reset_data()
+        r = requests.get(MATCH_HISTORY_URL)
+        self.assertTrue(self.is_json(r.content.decode('utf-8')))
+        resp = json.loads(r.content.decode('utf-8'))
+        self.assertEqual(resp['result'], 'success')
 
-    # /champion/
+        #get with account id
+        account_id = 234873632
+        self.reset_data()
+        r = requests.get(MATCH_HISTORY_URL + str(account_id))
+        self.assertTrue(self.is_json(r.content.decode('utf-8')))
+        resp = json.loads(r.content.decode('utf-8'))
+        self.assertEqual(resp['result'], 'success')
 
-    # /matches/
+    def test_matches_post(self):
+        #post with account id
+        account_id = 234873632
+        self.reset_data()
+        
+        match = {}
+        match['match_num']   = 1
+        match['lane']        = 'TOP'
+        match['game_id']     = 2442
+        match['champion_id'] = 42
+        match['queue']       = 244
+        match['role']        = 'DUO_CARRY'
+        match['timestamp']   = 122242
 
-    # /meta/
+        r = requests.post(MATCH_HISTORY_URL + str(account_id), data = json.dumps(match))
+        self.assertTrue(self.is_json(r.content.decode('utf-8')))
+        resp = json.loads(r.content.decode('utf-8'))
+        self.assertEqual(resp['result'], 'success')
+    
+    def test_matches_delete(self):
+        #delete with account id
+        self.reset_data()
+        account_id = 234873632
 
-    # /reset/
+        d = {}
+        r = requests.delete(MATCH_HISTORY_URL + str(account_id), data = json.dumps(d))
+        self.assertTrue(self.is_json(r.content.decode('utf-8')))
+        resp = json.loads(r.content.decode('utf-8'))
+        self.assertEqual(resp['result'], 'success')
 
+        r = requests.get(MATCH_HISTORY_URL + str(account_id))
+        self.assertTrue(self.is_json(r.content.decode('utf-8')))
+        resp = json.loads(r.content.decode('utf-8'))
+        self.assertEqual(resp['result'], 'error')
+
+    # /champion/ unit test
+    def test_champion_get(self):
+        #get without account id
+        self.reset_data()
+        r = requests.get(CHAMPION_URL)
+        self.assertTrue(self.is_json(r.content.decode('utf-8')))
+        resp = json.loads(r.content.decode('utf-8'))
+        self.assertEqual(resp['result'], 'success')
+
+    def test_champion_get_key(self):
+        self.reset_data()
+        account_id = 266
+        r = requests.get(CHAMPION_URL + str(account_id))
+        self.assertTrue(self.is_json(r.content.decode('utf-8')))
+        resp = json.loads(r.content.decode('utf-8'))
+        self.assertEqual(resp['result'], 'success')
+        self.assertEqual(resp['c_name'], 'Aatrox')
+        self.assertEqual(resp['image'], 'Aatrox.png')
+        self.assertEqual(resp['champ_id'], '266')
+
+    def test_champion_post_key(self):
+        self.reset_data()
+        champ_id = 266
+        t = {}  # test dictionary
+        t['c_name'] = 'Michael'
+        t['image'] = 'Michael.png'
+        t['champ_id'] = champ_id
+        # TODO: META VOTE
+
+        # Make POST request
+        r = requests.post(CHAMPION_URL, data = json.dumps(t))
+        self.assertTrue(self.is_json(r.content.decode('utf-8')))
+        resp = json.loads(r.content.decode('utf-8'))
+        self.assertEqual(resp['result'], 'success')
+
+        # GET updated value
+        r = requests.get(CHAMPION_URL + str(champ_id))
+        self.assertTrue(self.is_json(r.content.decode('utf-8')))
+        resp = json.loads(r.content.decode('utf-8'))
+        self.assertEqual(resp['result'], 'success')
+        self.assertEqual(resp['c_name'], 'Michael')
+        self.assertEqual(resp['image'], 'Michael.png')
+        self.assertEqual(resp['champ_id'], str(champ_id))
+
+    def test_champion_delete(self):
+        self.reset_data()
+        champ_id = 266
+
+        # Make DELETE request
+        r = requests.delete(CHAMPION_URL + str(champ_id))
+        self.assertTrue(self.is_json(r.content.decode('utf-8')))
+        resp = json.loads(r.content.decode('utf-8'))
+        self.assertEqual(resp['result'], 'success')
+
+        # Verify null
+        r = requests.get(CHAMPION_URL + str(champ_id))
+        self.assertTrue(self.is_json(r.content.decode('utf-8')))
+        resp = json.loads(r.content.decode('utf-8'))
+        self.assertEqual(resp['result'], 'error')
+        self.assertEqual(resp['message'], 'champion not found')
+
+    #TODO: Meta Unit test
 
 if __name__ == '__main__':
 	print('Testing Port number: ', PORT_NUM)
