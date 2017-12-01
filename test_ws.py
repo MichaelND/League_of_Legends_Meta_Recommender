@@ -10,23 +10,18 @@ import unittest
 import requests
 import json
 
-PORT_NUM 				= '51080'
-SITE_URL 				= 'http://student04.cse.nd.edu:' + PORT_NUM
-PLAYERS_URL 			= SITE_URL + '/players/'
-CHAMPION_URL 			= SITE_URL + '/champion/'
-MATCH_HISTORY_URL 		= SITE_URL + '/matches/'
-META_URL 				= SITE_URL + '/meta/'
-RESET_URL 				= SITE_URL + '/reset/'
-RESET_PLAYER_URL 		= RESET_URL + '/players/'
-RESET_MATCH_HISTORY_URL = RESET_URL + '/matches/'
-RESET_CHAMPION_URL 		= RESET_URL + '/champion/'
-
+PORT_NUM                = '51049'
+SITE_URL                = 'http://student04.cse.nd.edu:' + PORT_NUM
+PLAYERS_URL             = SITE_URL + '/players/'
+CHAMPION_URL            = SITE_URL + '/champion/'
+MATCH_HISTORY_URL       = SITE_URL + '/matches/'
+META_URL                = SITE_URL + '/meta/'
+RESET_URL               = SITE_URL + '/reset/'
+# RESET_PLAYER_URL      = RESET_URL + '/players/'
+# RESET_MATCH_HISTORY_URL = RESET_URL + '/matches/'
+# RESET_CHAMPION_URL        = RESET_URL + '/champion/'
 
 class TestWebservice(unittest.TestCase):
-    def reset_data(self):
-        m = {}
-        r = requests.put(RESET_URL, data = json.dumps(m))
-
     def is_json(self, resp):
         try:
             json.loads(resp)
@@ -34,9 +29,118 @@ class TestWebservice(unittest.TestCase):
         except ValueError:
             return False
 
-    # /players/ unit tests
+    # /reset/ unit test
+    def reset_data(self):
+        m = {}
+        r = requests.put(RESET_URL, data = json.dumps(m))
 
-    # /champion/ unit tests
+    # /players/ unit test
+    def test_players_get(self):
+        #get without account id
+        self.reset_data()
+        r = requests.get(PLAYERS_URL)
+        self.assertTrue(self.is_json(r.content.decode('utf-8')))
+        resp = json.loads(r.content.decode('utf-8'))
+        self.assertEqual(resp['result'], 'success')
+
+        #get with account id
+        account_id = 234873632
+        self.reset_data()
+        r = requests.get(PLAYERS_URL + str(account_id))
+        self.assertTrue(self.is_json(r.content.decode('utf-8')))
+        resp = json.loads(r.content.decode('utf-8'))
+        self.assertEqual(resp['result'], 'success')
+        self.assertEqual(resp['wins'], 317)
+        self.assertEqual(resp['losses'], 243)
+        self.assertEqual(resp['acc_id'], '234873632')
+        self.assertEqual(resp['name'], 'CHIEF KEITH')
+        self.assertEqual(resp['lp'], 653)
+
+    def test_players_post(self):
+        #post without account id
+        self.reset_data()
+        
+        player = {}
+        player['wins']      = 317
+        player['losses']    = 243
+        player['name']      = 'CHIEF KEITH'
+        player['lp']        = 653
+        player['acc_id']    = '234873632'
+
+        r = requests.post(PLAYERS_URL, data = json.dumps(player))
+        self.assertTrue(self.is_json(r.content.decode('utf-8')))
+        resp = json.loads(r.content.decode('utf-8'))
+        self.assertEqual(resp['result'], 'success')
+    
+    def test_players_delete(self):
+        #delete with account id
+        self.reset_data()
+        account_id = 234873632
+
+        d = {}
+        r = requests.delete(PLAYERS_URL + str(account_id), data = json.dumps(d))
+        self.assertTrue(self.is_json(r.content.decode('utf-8')))
+        resp = json.loads(r.content.decode('utf-8'))
+        self.assertEqual(resp['result'], 'success')
+
+        r = requests.get(PLAYERS_URL + str(account_id))
+        self.assertTrue(self.is_json(r.content.decode('utf-8')))
+        resp = json.loads(r.content.decode('utf-8'))
+        self.assertEqual(resp['result'], 'error')
+
+    # /matches/ unit test
+    def test_matches_get(self):
+        #get without account id
+        self.reset_data()
+        r = requests.get(MATCH_HISTORY_URL)
+        self.assertTrue(self.is_json(r.content.decode('utf-8')))
+        resp = json.loads(r.content.decode('utf-8'))
+        self.assertEqual(resp['result'], 'success')
+
+        #get with account id
+        account_id = 234873632
+        self.reset_data()
+        r = requests.get(MATCH_HISTORY_URL + str(account_id))
+        self.assertTrue(self.is_json(r.content.decode('utf-8')))
+        resp = json.loads(r.content.decode('utf-8'))
+        self.assertEqual(resp['result'], 'success')
+
+    def test_matches_post(self):
+        #post with account id
+        account_id = 234873632
+        self.reset_data()
+        
+        match = {}
+        match['match_num']   = 1
+        match['lane']        = 'TOP'
+        match['game_id']     = 2442
+        match['champion_id'] = 42
+        match['queue']       = 244
+        match['role']        = 'DUO_CARRY'
+        match['timestamp']   = 122242
+
+        r = requests.post(MATCH_HISTORY_URL + str(account_id), data = json.dumps(match))
+        self.assertTrue(self.is_json(r.content.decode('utf-8')))
+        resp = json.loads(r.content.decode('utf-8'))
+        self.assertEqual(resp['result'], 'success')
+    
+    def test_matches_delete(self):
+        #delete with account id
+        self.reset_data()
+        account_id = 234873632
+
+        d = {}
+        r = requests.delete(MATCH_HISTORY_URL + str(account_id), data = json.dumps(d))
+        self.assertTrue(self.is_json(r.content.decode('utf-8')))
+        resp = json.loads(r.content.decode('utf-8'))
+        self.assertEqual(resp['result'], 'success')
+
+        r = requests.get(MATCH_HISTORY_URL + str(account_id))
+        self.assertTrue(self.is_json(r.content.decode('utf-8')))
+        resp = json.loads(r.content.decode('utf-8'))
+        self.assertEqual(resp['result'], 'error')
+
+    # /champion/ unit test
     def test_champion_get(self):
         #get without account id
         self.reset_data()
@@ -97,14 +201,8 @@ class TestWebservice(unittest.TestCase):
         self.assertEqual(resp['result'], 'error')
         self.assertEqual(resp['message'], 'champion not found')
 
-
-    # /matches/
-
-    # /meta/
-
-    # /reset/
-
+    #TODO: Meta Unit test
 
 if __name__ == '__main__':
-	print('Testing Port number: ', PORT_NUM)
-	unittest.main()
+    print('Testing Port number: ', PORT_NUM)
+    unittest.main()
