@@ -77,8 +77,8 @@ class TestLeageDatabase(unittest.TestCase):
 			self.reset_data()
 			match_history = self.ldb.get_match_history(ACC_ID)
 			self.assertEqual(match_history[0]['lane'], 'BOTTOM')
-			self.assertEqual(match_history[0]['gameId'], 2656410494)
-			self.assertEqual(match_history[0]['champion'], 429)
+			self.assertEqual(match_history[0]['game_id'], 2656410494)
+			self.assertEqual(match_history[0]['champion_id'], 429)
 			self.assertEqual(match_history[0]['queue'], 420)
 			self.assertEqual(match_history[0]['role'], 'DUO_CARRY')
 			self.assertEqual(match_history[0]['timestamp'], 1511683429568)
@@ -87,16 +87,16 @@ class TestLeageDatabase(unittest.TestCase):
 			self.reset_data()
 			match = self.ldb.get_match_history(ACC_ID)[0]
 			match['lane'] = 'odyssey'
-			match['gameId'] = 1337
-			match['champion'] = 22
+			match['game_id'] = 1337
+			match['champion_id'] = 22
 			match['queue'] = 717
 			match['role'] = 'switch'
 			match['timestamp'] = 1941782
 			self.ldb.set_match_history(ACC_ID, match, 0)
 			match = self.ldb.get_match_history(ACC_ID)
 			self.assertEqual(match[0]['lane'], 'odyssey')
-			self.assertEqual(match[0]['gameId'], 1337)
-			self.assertEqual(match[0]['champion'], 22)
+			self.assertEqual(match[0]['game_id'], 1337)
+			self.assertEqual(match[0]['champion_id'], 22)
 			self.assertEqual(match[0]['queue'], 717)
 			self.assertEqual(match[0]['role'], 'switch')
 			self.assertEqual(match[0]['timestamp'], 1941782)
