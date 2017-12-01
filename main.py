@@ -71,6 +71,7 @@ def start_service():
     #/champion/:key
     dispatcher.connect('champion_get_key', '/champion/:key', controller = champion_controller, action = 'GET_KEY', conditions = dict(method=['GET']))
     dispatcher.connect('champion_put_key', '/champion/:key', controller = champion_controller, action = 'PUT_KEY', conditions = dict(method=['PUT']))
+    dispatcher.connect('champion_delete_key', '/champion/:key', controller = champion_controller, action = 'DELETE_KEY', conditions = dict(method=['DELETE']))
 
     #/meta/
     dispatcher.connect('meta_get', '/meta/', controller = meta_controller, action = 'GET', conditions = dict(method=['GET']))

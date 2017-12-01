@@ -34,13 +34,19 @@ class ResetController(object):
     def PUT_PLAYER_KEY(self, key):
         # key = acc_id
         output = {'result' : 'success'}
+        key = int(key)
 
         # Recreate an original ldb.
         orig_ldb = _league_database()
         orig_ldb.load_players(self.players_path)
 
         try:
-            self.ldb.players[key] = orig_ldb.get_player(int(key))
+            print("aaaa")
+            print("aaaabbbb")
+            print(orig_ldb.get_player(key))
+            print("aaaacccc")
+
+            self.ldb.players[key] = orig_ldb.get_player(key)
         except Exception as e:
             output['result'] = 'error'
             output['message'] = str(e)
@@ -51,13 +57,14 @@ class ResetController(object):
     def PUT_MATCH_KEY(self, key):
         # key = acc_id
         output = {'result' : 'success'}
+        key = int(key)
 
         # Recreate an original ldb.
         orig_ldb = _league_database()
         orig_ldb.load_match_history(self.match_history_path)
 
         try:
-            self.ldb.matches[key] = orig_ldb.get_match_history(int(key))
+            self.ldb.matches[key] = orig_ldb.get_match_history(key)
         except Exception as e:
             output['result'] = 'error'
             output['message'] = str(e)
@@ -68,13 +75,14 @@ class ResetController(object):
     def PUT_CHAMPION_KEY(self, key):
         # key = champion_id
         output = {'result' : 'success'}
+        key = int(key)
 
         # Recreate an original ldb.
         orig_ldb = _league_database()
         orig_ldb.load_champions(self.champions_path)
 
         try:
-            self.ldb.champions[key] = orig_ldb.get_champion(int(key))
+            self.ldb.champions[key] = orig_ldb.get_champion(key)
         except Exception as e:
             output['result'] = 'error'
             output['message'] = str(e)
