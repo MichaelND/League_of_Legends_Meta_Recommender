@@ -13,12 +13,12 @@ import json
 PORT_NUM 				= '51049'
 SITE_URL 				= 'http://student04.cse.nd.edu:' + PORT_NUM
 PLAYERS_URL 			= SITE_URL + '/players/'
-CHAMPION_URL 			= SITE_URL + '/champions/'
+CHAMPION_URL 			= SITE_URL + '/champion/'
 MATCH_HISTORY_URL 		= SITE_URL + '/matches/'
 META_URL 				= SITE_URL + '/meta/'
 RESET_URL 				= SITE_URL + '/reset/'
-RESET_PLAYER_URL 		= RESET_URL + '/player/'
-RESET_MATCH_HISTORY_URL = RESET_URL + '/match_history/'
+RESET_PLAYER_URL 		= RESET_URL + '/players/'
+RESET_MATCH_HISTORY_URL = RESET_URL + '/matches/'
 RESET_CHAMPION_URL 		= RESET_URL + '/champion/'
 
 
@@ -36,7 +36,7 @@ class TestWebservice(unittest.TestCase):
 
     def test_players_get(self):
         #get without account id
-        # self.reset_data()
+        self.reset_data()
         r = requests.get(PLAYERS_URL)
         self.assertTrue(self.is_json(r.content.decode('utf-8')))
         resp = json.loads(r.content.decode('utf-8'))
@@ -55,9 +55,9 @@ class TestWebservice(unittest.TestCase):
         self.assertEqual(resp['name'], 'CHIEF KEITH')
         self.assertEqual(resp['lp'], 653)
 
-    def test_players_put(self):
-        # self.reset_data()
-        account_id = 234873632
+    def test_players_post(self):
+        #post without account id
+        self.reset_data()
         
         player = {}
         player['wins']      = 317
@@ -66,45 +66,21 @@ class TestWebservice(unittest.TestCase):
         player['lp']        = 653
         player['acc_id']    = '234873632'
 
-        r = requests.put(PLAYERS_URL, data = json.dumps(player))
+        r = requests.post(PLAYERS_URL, data = json.dumps(player))
         self.assertTrue(self.is_json(r.content.decode('utf-8')))
         resp = json.loads(r.content.decode('utf-8'))
         self.assertEqual(resp['result'], 'success')
     
+    def test_players_delete(self):
+        #delete with account id
+        self.reset_data()
+        account_id = 234873632
 
-    # def test_movies_put(self):
-    #     self.reset_data()
-    #     movie_id = 95
-
-    #     r = requests.get(self.MOVIES_URL + str(movie_id))
-    #     self.assertTrue(self.is_json(r.content.decode('utf-8')))
-    #     resp = json.loads(r.content.decode('utf-8'))
-    #     self.assertEqual(resp['title'], 'Broken Arrow (1996)')
-    #     self.assertEqual(resp['genres'], 'Action|Thriller')
-
-    #     m = {}
-    #     m['title'] = 'ABC'
-    #     m['genres'] = 'Sci-Fi|Fantasy'
-    #     r = requests.put(self.MOVIES_URL + str(movie_id), data = json.dumps(m))
-    #     self.assertTrue(self.is_json(r.content.decode('utf-8')))
-    #     resp = json.loads(r.content.decode('utf-8'))
-    #     self.assertEqual(resp['result'], 'success')
-
-    #     r = requests.get(self.MOVIES_URL + str(movie_id))
-    #     self.assertTrue(self.is_json(r.content.decode('utf-8')))
-    #     resp = json.loads(r.content.decode('utf-8'))
-    #     self.assertEqual(resp['title'], m['title'])
-    #     self.assertEqual(resp['genres'], m['genres'])
-
-    # def test_movies_delete(self):
-    #     self.reset_data()
-    #     movie_id = 95
-
-    #     m = {}
-    #     r = requests.delete(self.MOVIES_URL + str(movie_id), data = json.dumps(m))
-    #     self.assertTrue(self.is_json(r.content.decode('utf-8')))
-    #     resp = json.loads(r.content.decode('utf-8'))
-    #     self.assertEqual(resp['result'], 'success')
+        d = {}
+        r = requests.delete(PLAYERS_URL + account_id, data = json.dumps(d))
+        self.assertTrue(self.is_json(r.content.decode('utf-8')))
+        resp = json.loads(r.content.decode('utf-8'))
+        self.assertEqual(resp['result'], 'success')
 
     #     r = requests.get(self.MOVIES_URL + str(movie_id))
     #     self.assertTrue(self.is_json(r.content.decode('utf-8')))

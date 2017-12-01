@@ -29,6 +29,7 @@ class _league_database():
             p['losses'] = int(values[1].rstrip('\n\r'))
             p['name']   = values[2].rstrip('\n\r')
             p['lp']     = int(values[4].rstrip('\n\r'))
+            p['acc_id'] = account_id
 
             self.players[account_id] = p
         f.close()
@@ -103,10 +104,11 @@ class _league_database():
             self.players[account_id] = {}
 
         # Update data.
-        self.players[account_id]['wins']    = data['wins']
-        self.players[account_id]['losses']  = data['losses']
-        self.players[account_id]['name']    = data['name']
-        self.players[account_id]['lp']      = data['lp']
+        self.players[account_id]['wins']        = data['wins']
+        self.players[account_id]['losses']      = data['losses']
+        self.players[account_id]['name']        = data['name']
+        self.players[account_id]['lp']          = data['lp']
+        self.players[account_id]['acc_id']      = account_id
 
     def set_champion(self, champion_key, data):
         champion_key = int(champion_key)
