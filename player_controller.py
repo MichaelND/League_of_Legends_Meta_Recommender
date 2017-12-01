@@ -15,7 +15,8 @@ class PlayerController(object):
         output = {'result' : 'success'}
         try:
             playerList = []
-            for p, v in self.ldb.players.items():
+            for p in self.ldb.players.keys():
+                v = self.ldb.get_player(p)
                 playerList.append({'acc_id' : p, 'wins' : v['wins'], 'losses' : v['losses'], 'name' : v['name'], 'lp' : v['lp']})
             output['players'] = playerList
         except Exception as e:
@@ -42,7 +43,7 @@ class PlayerController(object):
         player = self.ldb.get_player(key)
         if player is None:
             output['result'] = 'error'
-            output['message'] = str(e)
+            output['message'] = 'player does not exist'
         else:
             output['acc_id'] = key
             output['wins'] = player['wins']
