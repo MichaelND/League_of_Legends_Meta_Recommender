@@ -131,13 +131,13 @@ class _league_database():
 		self.matches[account_id][gameIdx]['timestamp'] 	= data['timestamp']
 
 	def delete_player(self, account_id):
-		self.players.pop(account_id)
+		self.players.pop(int(account_id))
 
 	def delete_champion(self, champion_key):
-		self.champions.pop(champion_key)
+		self.champions.pop(int(champion_key))
 
 	def delete_match_history(self, account_id):
-		self.matches.pop(account_id)
+		self.matches.pop(int(account_id))
 
 	def delete_all_dictionaries(self):
 		self.players 	= {} 

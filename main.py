@@ -18,7 +18,7 @@ from champion_controller import ChampionController
 #*******************************************************
 # Global Variables
 #*******************************************************
-PORT                        = 51080
+PORT                        = 51049
 PLAYER_DATA_PATH            = 'data/challenger.csv'
 CHAMPION_DATA_PATH          = 'data/champions.csv'
 MATCH_HISTORY_DATA_PATH     = 'data/match_history.csv'
@@ -73,7 +73,7 @@ def start_service():
     #/meta/
     dispatcher.connect('meta_get', '/meta/', controller = meta_controller, action = 'GET', conditions = dict(method=['GET']))
     #/meta/:key
-    dispatcher.connect('meta_get_lane', '/meta/:key', controller = meta_controller, action = 'GET_KEY', conditions = dict(method=['GET']))
+    dispatcher.connect('meta_get_key', '/meta/:key', controller = meta_controller, action = 'GET_KEY', conditions = dict(method=['GET']))
     
 
     #set up server
