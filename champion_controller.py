@@ -68,3 +68,13 @@ class ChampionController(object):
         output['result'] = 'success'
 
         return json.dumps(output)
+
+    def DELETE_KEY(self, key):
+        #This function will delete a champion by champ_id        
+        output = {'result' : 'success'}
+        try:
+            self.ldb.delete_champion(key)
+        except Exception as e:
+            output['result'] = 'error'
+            output['message'] = str(e)
+        return json.dumps(output)
