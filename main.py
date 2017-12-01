@@ -19,7 +19,7 @@ from reset_controller import ResetController
 #*******************************************************
 # Global Variables
 #*******************************************************
-PORT                        = 51049
+PORT                        = 51080
 PLAYER_DATA_PATH            = 'data/challenger.csv'
 CHAMPION_DATA_PATH          = 'data/champions.csv'
 MATCH_HISTORY_DATA_PATH     = 'data/match_history.csv'

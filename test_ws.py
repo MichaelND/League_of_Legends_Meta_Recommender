@@ -10,7 +10,7 @@ import unittest
 import requests
 import json
 
-PORT_NUM 				= '51049'
+PORT_NUM 				= '51080'
 SITE_URL 				= 'http://student04.cse.nd.edu:' + PORT_NUM
 PLAYERS_URL 			= SITE_URL + '/players/'
 CHAMPION_URL 			= SITE_URL + '/champion/'
@@ -34,63 +34,69 @@ class TestWebservice(unittest.TestCase):
         except ValueError:
             return False
 
-    def test_players_get(self):
+    # /players/ unit tests
+
+    # /champion/ unit tests
+    def test_champion_get(self):
         #get without account id
         self.reset_data()
-        r = requests.get(PLAYERS_URL)
+        r = requests.get(CHAMPION_URL)
         self.assertTrue(self.is_json(r.content.decode('utf-8')))
         resp = json.loads(r.content.decode('utf-8'))
         self.assertEqual(resp['result'], 'success')
 
-        #get with account id
-        account_id = 234873632
+    def test_champion_get_key(self):
         self.reset_data()
-        r = requests.get(PLAYERS_URL + str(account_id))
+        account_id = 266
+        r = requests.get(CHAMPION_URL + str(account_id))
         self.assertTrue(self.is_json(r.content.decode('utf-8')))
         resp = json.loads(r.content.decode('utf-8'))
         self.assertEqual(resp['result'], 'success')
-        self.assertEqual(resp['wins'], 317)
-        self.assertEqual(resp['losses'], 243)
-        self.assertEqual(resp['acc_id'], '234873632')
-        self.assertEqual(resp['name'], 'CHIEF KEITH')
-        self.assertEqual(resp['lp'], 653)
+        self.assertEqual(resp['c_name'], 'Aatrox')
+        self.assertEqual(resp['image'], 'Aatrox.png')
+        self.assertEqual(resp['champ_id'], '266')
 
-    def test_players_post(self):
-        #post without account id
+    def test_champion_post_key(self):
         self.reset_data()
-        
-        player = {}
-        player['wins']      = 317
-        player['losses']    = 243
-        player['name']      = 'CHIEF KEITH'
-        player['lp']        = 653
-        player['acc_id']    = '234873632'
+        champ_id = 266
+        t = {}  # test dictionary
+        t['c_name'] = 'Michael'
+        t['image'] = 'Michael.png'
+        t['champ_id'] = champ_id
+        # TODO: META VOTE
 
-        r = requests.post(PLAYERS_URL, data = json.dumps(player))
+        # Make POST request
+        r = requests.post(CHAMPION_URL, data = json.dumps(t))
         self.assertTrue(self.is_json(r.content.decode('utf-8')))
         resp = json.loads(r.content.decode('utf-8'))
         self.assertEqual(resp['result'], 'success')
-    
-    def test_players_delete(self):
-        #delete with account id
+
+        # GET updated value
+        r = requests.get(CHAMPION_URL + str(champ_id))
+        self.assertTrue(self.is_json(r.content.decode('utf-8')))
+        resp = json.loads(r.content.decode('utf-8'))
+        self.assertEqual(resp['result'], 'success')
+        self.assertEqual(resp['c_name'], 'Michael')
+        self.assertEqual(resp['image'], 'Michael.png')
+        self.assertEqual(resp['champ_id'], str(champ_id))
+
+    def test_champion_delete(self):
         self.reset_data()
-        account_id = 234873632
+        champ_id = 266
 
-        d = {}
-        r = requests.delete(PLAYERS_URL + account_id, data = json.dumps(d))
+        # Make DELETE request
+        r = requests.delete(CHAMPION_URL + str(champ_id))
         self.assertTrue(self.is_json(r.content.decode('utf-8')))
         resp = json.loads(r.content.decode('utf-8'))
         self.assertEqual(resp['result'], 'success')
 
-    #     r = requests.get(self.MOVIES_URL + str(movie_id))
-    #     self.assertTrue(self.is_json(r.content.decode('utf-8')))
-    #     resp = json.loads(r.content.decode('utf-8'))
-    #     self.assertEqual(resp['result'], 'error')
-    #     #self.assertEqual(resp['message'], 'movie not found')
+        # Verify null
+        r = requests.get(CHAMPION_URL + str(champ_id))
+        self.assertTrue(self.is_json(r.content.decode('utf-8')))
+        resp = json.loads(r.content.decode('utf-8'))
+        self.assertEqual(resp['result'], 'error')
+        self.assertEqual(resp['message'], 'champion not found')
 
-    # /players/
-
-    # /champion/
 
     # /matches/
 
