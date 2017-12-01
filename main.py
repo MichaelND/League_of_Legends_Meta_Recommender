@@ -14,6 +14,7 @@ from matches_controller import MatchesController
 from player_controller import PlayerController
 from meta_controller import MetaController
 from champion_controller import ChampionController
+from reset_controller import ResetController
 
 #*******************************************************
 # Global Variables
@@ -47,6 +48,7 @@ def start_service():
     player_controller = PlayerController(ldb)
     meta_controller = MetaController(ldb)
     champion_controller = ChampionController(ldb)
+    reset_controller = ResetController(ldb, PLAYER_DATA_PATH, MATCH_HISTORY_DATA_PATH, CHAMPION_DATA_PATH)
 
 
     #/player/
@@ -74,6 +76,13 @@ def start_service():
     dispatcher.connect('meta_get', '/meta/', controller = meta_controller, action = 'GET', conditions = dict(method=['GET']))
     #/meta/:key
     dispatcher.connect('meta_get_key', '/meta/:key', controller = meta_controller, action = 'GET_KEY', conditions = dict(method=['GET']))
+
+    #/reset/
+    dispatcher.connect('reset_put', '/reset/', controller = reset_controller, action = 'PUT', conditions = dict(method=['PUT']))
+    #/reset/:key
+    dispatcher.connect('reset_put_player_key', '/reset/players/:key', controller = reset_controller, action = 'PUT_PLAYER_KEY', conditions = dict(method=['PUT']))
+    dispatcher.connect('reset_put_matches_key', '/reset/matches/:key', controller = reset_controller, action = 'PUT_MATCH_KEY', conditions = dict(method=['PUT']))
+    dispatcher.connect('reset_put_champion_key', '/reset/champion/:key', controller = reset_controller, action = 'PUT_CHAMPION_KEY', conditions = dict(method=['PUT']))
     
 
     #set up server

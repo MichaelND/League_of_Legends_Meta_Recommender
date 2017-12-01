@@ -11,12 +11,13 @@ class MatchesController(object):
     def __init__(self, ldb):
         self.ldb = ldb
 
+    # GET all matches of all players
     def GET(self):
         output = {'result' : 'success'}
         try:
             for k, v in self.ldb.matches.items():
                 # k = acc_id
-                # v = all games
+                # v = list of their games
                 gameList = []
                 for i in range(0, len(v)):
                     gameList.append(v[i])
@@ -26,6 +27,7 @@ class MatchesController(object):
             output['message'] = str(e)
         return json.dumps(output)
 
+    # GET matches of player by acc_id
     def GET_KEY(self, key):
         # key = acc_id
         output = {'result' : 'success'}
@@ -37,6 +39,7 @@ class MatchesController(object):
             output['matches'] = match_history
         return json.dumps(output)
 
+    # POST mataches of player
     def POST_KEY(self, key):
         # key = acc_id
         output = {'result' : 'success'}
@@ -49,6 +52,7 @@ class MatchesController(object):
             output['message'] = str(e)
         return json.dumps(output)
 
+    # DELETE a player's matches by acc_id
     def DELETE_KEY(self, key):
         # key = acc_id
         output = {'result' : 'success'}
