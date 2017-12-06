@@ -11,27 +11,32 @@ import requests
 import sys
 import time
 
-N_GAMES		= 50000	 # The number of games to get data for
-REGION		= 'na1'  # The North American region
-API_KEY 	= 'RGAPI-63bd5919-e73d-4a66-ae0f-8f61803008be'
-API_STR		= '?api_key=' + API_KEY
-RIOT_URL	= 'https://' + REGION + '.api.riotgames.com/lol/'
+N_GAMES			= 10	# The number of games to get data
+N_CHALL_PLAYER	= 200		# Number of challenger players
+N_GAMES_PLAYER	= N_GAMES / N_CHALL_PLAYER	 # The number of games to get data for per player
+REGION			= 'na1'  # The North American region
+API_KEY 		= 'RGAPI-6599323f-b31d-4309-a76e-aa9f84fb0469'
+API_STR			= '?api_key=' + API_KEY
+RIOT_URL		= 'https://' + REGION + '.api.riotgames.com/lol/'
 
 CHALLENGER_NAMES 	= []
 CHALLENGER_ACC_IDS	= {}
 
+
+# Turn string to bytes
+def stob(string):
+	return string.encode(string)
 
 def make_requests(URL):
 	# Make request.
 	r = requests.get(URL)
 	if r.status_code != 200:
 		print("Status Code = " + str(r.status_code))
-	if r.status_code == 429:  # Limit has been reached
-		print('Limit has been reached. Sleeping...')
-		time.sleep(121)
-		r = requests.get(URL)  # Remake request
-	while r.status_code == 503:
-		r = requests.get(URL)  # Remake request
+		while r.status_code != 200:
+			if r.status_code == 429:  # Limit has been reached
+				print('Limit has been reached. Sleeping...')
+				time.sleep(121)
+			r = requests.get(URL)  # Remake request
 
 	return r
 
@@ -57,6 +62,7 @@ def create_challenger_data():
 
 	# Next find challenger player account id ###
 	for n in CHALLENGER_NAMES:
+		n = n.decode('utf-8')
 		print(n)
 		# Create URL
 		URL = RIOT_URL + 'summoner/v3/summoners/by-name/' + n + API_STR
@@ -71,28 +77,35 @@ def create_challenger_data():
 		CHALLENGER_ACC_IDS[n] = str(data['accountId'])
 
 	# Write to CSV.
-	with open('data/challenger.csv', 'wb') as csvfile:
+	with open('data/challenger_1m.csv', 'wb') as csvfile:
 		w = csv.writer(csvfile, delimiter=',')
 		for c in challenger_players:
-			n = c['playerOrTeamName'].encode('utf-8').rstrip()
+			n = c['playerOrTeamName'].rstrip()
 			c_id = CHALLENGER_ACC_IDS[n]  # Get ID
 
 			# Write to CSV file.
-			w.writerow([str(c['wins'])] + [str(c['losses'])] + [n] + [c_id] + [str(c['leaguePoints'])])
+			print(type(c['wins']))
+			print(type(c['losses']))
+			print(type(n))
+			print(type(c_id))
+			print(type(c['leaguePoints']))
+			w.writerow([c['wins']] + [c['losses']] + [stob(n)] + [c_id] + [c['leaguePoints']])
 
 
+# DEPRECATED
 # CSV FORMAT: acc_id(int),lane(str),gameId(long),champion(int),queue(int),role(str),timestamp(long)
-def create_match_history_data():
-	print('Creating match history data...')
+# Recent is recent 20 games.
+def create_recent_match_history_data():
+	print('Creating recent match history data...')
 
 	# MANUAL CHANGE: If Challenger csv has been made.
-	with open('data/challenger.csv', 'rb') as csvfile:
+	with open('data/challenger_1m.csv', 'rb') as csvfile:
 		r = csv.reader(csvfile, delimiter=',')
 		for row in r:
 			CHALLENGER_ACC_IDS[row[2]] = row[3]
 
 	# Write to CSV.
-	with open('data/match_history.csv', 'wb') as csvfile:
+	with open('data/recent_match_history_1m.csv', 'wb') as csvfile:
 		w = csv.writer(csvfile, delimiter=',')
 
 		# Loop through challenger ids.
@@ -112,6 +125,42 @@ def create_match_history_data():
 				w.writerow([c_acc_id] + [recent_matches[i]['lane']] + [str(recent_matches[i]['gameId'])] + [str(recent_matches[i]['champion'])] + [str(recent_matches[i]['queue'])] + [recent_matches[i]['role']] + [str(recent_matches[i]['timestamp'])])
 
 
+# CSV FORMAT: acc_id(int),lane(str),gameId(long),champion(int),queue(int),role(str),timestamp(long)
+def create_match_history_data():
+	print('Creating match history data...')
+
+	# # MANUAL CHANGE: If Challenger csv has been made.
+	# with open('data/challenger_1m.csv', 'rb') as csvfile:
+	# 	r = csv.reader(csvfile, delimiter=',')
+	# 	for row in r:
+	# 		CHALLENGER_ACC_IDS[row[2]] = row[3]
+
+	# Write to CSV.
+	with open('data/match_history_1m.csv', 'wb') as csvfile:
+		w = csv.writer(csvfile, delimiter=',')
+
+		# Loop through challenger ids.
+		for c_acc_name, c_acc_id in CHALLENGER_ACC_IDS.items():
+			# Create URL.
+			URL = RIOT_URL + 'match/v3/matchlists/by-account/' + str(c_acc_id) + API_STR
+
+			# Make request.
+			r = make_requests(URL)
+
+			# Load data.
+			match_history_data = json.loads(r.content.decode('utf-8'))
+			matches = match_history_data['matches']
+
+			# Loop through games.
+			solo_count = 0
+			for i in range(len(matches)):
+				# Check if game is a soloqueue game.
+				while solo_count < N_GAMES_PLAYER:
+					if matches[i]['queue'] == 420:
+						w.writerow([c_acc_id] + [matches[i]['lane']] + [str(matches[i]['gameId'])] + [str(matches[i]['champion'])] + [str(matches[i]['queue'])] + [matches[i]['role']] + [str(matches[i]['timestamp'])])
+
+
+
 # CSV FORMAT: champion_name(str),key(int),image_name(str)
 def create_champion_data():
 	print('Creating champion data...')
@@ -127,7 +176,7 @@ def create_champion_data():
 	champions = data['data'].keys()
 
 	# Write to CSV
-	with open('data/champions.csv', 'wb') as csvfile:
+	with open('data/champions_1m.csv', 'wb') as csvfile:
 		w = csv.writer(csvfile, delimiter=',')
 		for c in champions:
 			# Write to CSV file.
@@ -135,9 +184,10 @@ def create_champion_data():
 
 
 if __name__ == '__main__':
-	# create_challenger_data()
+	create_challenger_data()
 	create_match_history_data()
-	# create_champion_data()
+	# create_recent_match_history_data() # calls the api for 20
+	create_champion_data()
 
 	sys.exit(0)
 
