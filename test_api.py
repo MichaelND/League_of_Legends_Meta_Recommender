@@ -20,14 +20,14 @@ class TestLeageDatabase(unittest.TestCase):
 	def reset_data(self):
 			#reset all data to begin with
 			self.ldb.delete_all_dictionaries()
-			self.ldb.load_players('data/challenger.csv')
-			self.ldb.load_champions('data/champions.csv')
-			self.ldb.load_match_history('data/match_history.csv')
+			self.ldb.load_players('data/challenger_1m.csv')
+			self.ldb.load_champions('data/champions_1m.csv')
+			self.ldb.load_match_history('data/match_history_1m.csv')
 
 	def test_get_player(self):
 			self.reset_data()
 			player = self.ldb.get_player(ACC_ID)
-			self.assertEqual(player['wins'], 317)
+			self.assertEqual(player['wins'], 319)
 			self.assertEqual(player['losses'], 243)
 			self.assertEqual(player['name'], 'CHIEF KEITH')
 			self.assertEqual(player['lp'], 653)
