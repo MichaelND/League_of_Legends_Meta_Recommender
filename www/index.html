@@ -8,69 +8,41 @@
 
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous">
-
-    <style>
-    div.video {
-      position: relative;
-    } 
-
-    div.Title {
-      position: absolute;
-      top: 30px;
-      left: 10px;
-    }
-
-    div.buttons {
-      position: absolute;
-      top: 80px;
-      left: 14px;
-    }
-    div.Top {
-      position: absolute;
-      top: 180px;
-      left: 14px;
-    }
-    div.Mid {
-      position: absolute;
-      top: 250px;
-      left: 14px;
-    }
-    div.Jungle {
-      position: absolute;
-      top: 320px;
-      left: 14px;
-    }
-    div.Bot-Sup {
-      position: absolute;
-      top: 390px;
-      left: 14px;
-    }
-    
-    </style>
+    <!-- main.css -->
+    <link rel="stylesheet" href="css/styles.css">
   </head>
   <body>
     <!--  Content  -->
     <div class="video">
-        <video id="video" muted="muted" width="100%" height="100%">
+        <video id="video" muted="muted" width="100%" height="100%" loop>
           <source type="video/mp4" src="Snowdown.mp4" />
         </video>
     </div>
 
-    <div class="buttons">
-      <div class="btn-group btn-group-lg">
-      <button type="button" class="btn btn-danger" onclick="get_top_meta();">Top</button>
-      <button type="button" class="btn btn-danger">Mid</button>
-      <button type="button" class="btn btn-danger">Jungle</button>
-      <button type="button" class="btn btn-danger">Bot/Support</button>
+    <div class="container">
+      <div class="row">
+        <div class="buttons">
+          <div class="btn-group btn-group-lg">
+          <button type="button" class="btn btn-danger" onclick="get_top_meta();">Top</button>
+          <button type="button" class="btn btn-danger">Mid</button>
+          <button type="button" class="btn btn-danger">Jungle</button>
+          <button type="button" class="btn btn-danger">Bot/Support</button>
+          </div>
+        </div>
       </div>
     </div>
 
-    <div class="Title">
-      <h3 class="bg-danger text-white">League of Legends Meta Geta</h3>
+    <div class="container" id="title">
+      <h3>League of Legends Meta Geta</h3>
     </div>
 
-    <div class="Top">
-      <h2 class="bg-danger text-white">Top <span class="label label-default"></span></h2>
+    <div class="container">
+      <div class="row">
+        <div class="Top">
+          <h2 class="bg-danger text-white">Top <span class="label label-default"></span></h2>
+          <img src="http://ddragon.leagueoflegends.com/cdn/6.24.1/img/champion/Aatrox.png" class="rounded-circle">
+        </div>
+      </div>
     </div>
 
     <div class="Mid">

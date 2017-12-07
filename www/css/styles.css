@@ -1,0 +1,52 @@
+/**
+ * Anthony Luc, Michael Wang
+ * Programming Paradigms
+ * styles.css
+ */
+
+@import url('https://fonts.googleapis.com/css?family=Didact+Gothic|Raleway');
+
+:root {
+    --body-color: #EEE;
+    --main-color: #f70404;
+    --text-color: #FFFFFF;
+}
+
+#title {
+  background-color: var(--main-color);
+  color: var(--text-color);
+  position: absolute;
+  top: 30px;
+  left: 10px;
+  padding: 10px, 100px, 10px, 10px;
+}
+
+div.video {
+  position: relative;
+} 
+
+div.buttons {
+  position: absolute;
+  top: 80px;
+  left: 14px;
+}
+div.Top {
+  position: absolute;
+  top: 180px;
+  left: 14px;
+}
+div.Mid {
+  position: absolute;
+  top: 250px;
+  left: 14px;
+}
+div.Jungle {
+  position: absolute;
+  top: 320px;
+  left: 14px;
+}
+div.Bot-Sup {
+  position: absolute;
+  top: 390px;
+  left: 14px;
+}
