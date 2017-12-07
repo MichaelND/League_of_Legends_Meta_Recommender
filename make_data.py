@@ -11,7 +11,7 @@ import requests
 import sys
 import time
 
-N_GAMES			= 10	# The number of games to get data
+N_GAMES			= 1000000	# The number of games to get data
 N_CHALL_PLAYER	= 200		# Number of challenger players
 N_GAMES_PLAYER	= N_GAMES / N_CHALL_PLAYER	 # The number of games to get data for per player
 REGION			= 'na1'  # The North American region
@@ -150,16 +150,12 @@ def create_match_history_data():
 			print('Analyzing ' + str(c_acc_name) + '\'s games')
 			solo_q_count = 0
 			for game in range(0, len(matches)):
-				print('in for loop, len = ' + str(len(matches)))
-				print('solo_q_count: ' + str(solo_q_count))
 				if solo_q_count <= N_GAMES_PLAYER:
-					print('if')
 					# Check if game is a soloqueue game.
-					if matches[game]['queue'] == '420':
-						solo_q_count = solo_q_count + 1
+					if matches[game]['queue'] == 420:
+						solo_q_count += 1
 						w.writerow([c_acc_id] + [matches[game]['lane']] + [str(matches[game]['gameId'])] + [str(matches[game]['champion'])] + [str(matches[game]['queue'])] + [matches[game]['role']] + [str(matches[game]['timestamp'])])
 				else:
-					print('else')
 					break
 
 
@@ -188,9 +184,9 @@ def create_champion_data():
 
 if __name__ == '__main__':
 	# create_challenger_data()
-	# create_match_history_data()
-	# create_recent_match_history_data() # calls the api for 20
-	create_champion_data()
+	create_match_history_data()
+	# create_recent_match_history_data() # calls the api for 20 matches only
+	# create_champion_data()
 
 	sys.exit(0)
 

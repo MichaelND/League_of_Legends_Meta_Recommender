@@ -166,7 +166,10 @@ class _league_database():
                         champion = self.champions[champ_id]
 
                         # Store indexing by lane.
-                        self.meta[lane].update({champion['c_name'] : champion['meta_rating']})
+                        try:
+                            self.meta[lane][champion['c_name']] += 1  # increment meta counter
+                        except:
+                            self.meta[lane].update({champion['c_name'] : 0}) # Add to meta dictionary for the first time
                     except KeyError as e:
                         continue
 
@@ -183,6 +186,7 @@ class _league_database():
             meta_list = sorted(max_keys)
             ret_dict[lane_key] = [] # make it into a list
             for i in range(0, num):
+                print(meta_list)
                 ret_dict[lane_key].append(meta_list[i])
         return ret_dict
 
