@@ -143,24 +143,49 @@ class _league_database():
 
     #- Advanced Functions -------------------------------------#
     def determine_meta(self):
-        meta = dict()
+        self.meta['TOP']     = {}
+        self.meta['JUNGLE']  = {}
+        self.meta['MID']     = {}
+        self.meta['BOTTOM']  = {}
 
-        # Loop through all matches.
-        for v in self.matches.values():
-            for match in range(0, len(v)):
-                print(v[match])
-                # meta[]
+        # Loop through all players and their matches.
+        for acc_id, values in self.matches.items():
+            # Loop through a player's matches
+            for i in range(0, len(values)): 
+                for j in range(0, len(values[i])):
+                    # Get match
+                    match = values[j]
+
+                    # Store champion indexed by lane
+                    lane = match['lane']
+                    game_id = match['game_id']
+
+                    # Get champion by champ id.
+                    champ_id = match['champion_id']
+                    try:
+                        champion = self.champions[champ_id]
+
+                        # Store indexing by lane.
+                        self.meta[lane].update({champion['c_name'] : champion['meta_rating']})
+                    except KeyError as e:
+                        continue
 
     def get_all_meta(self):
-        pass
-        # meta_top = self.get_lane_meta('TOP')
-        # meta_jgl = self.get_lane_meta('JUNGLE')
-        # meta_mid = self.get_lane_meta('MID')
-        # meta_bot = self.get_lane_meta('BOT')
-        # meta_sup = self.get_lane_meta('SUPPORT')
+        return {'TOP':self.meta['TOP'],'JUNGLE':self.meta['JUNGLE'],'MID':self.meta['MID'],'BOTTOM':self.meta['BOTTOM']}        
 
-    def get_lane_meta(self, lane):
-        pass
+    def get_n_meta(self, num):
+        ret_dict = {}
+
+        for lane_key, lane_val_dict in self.meta.items():               # Loop through meta
+            # Source: https://stackoverflow.com/questions/42044090/return-the-maximum-value-from-a-dictionary
+            max_val = max(lane_val_dict.values())
+            max_keys = [k for k, v in lane_val_dict.items() if v == max_val]  
+            meta_list = sorted(max_keys)
+            ret_dict[lane_key] = [] # make it into a list
+            for i in range(0, num):
+                ret_dict[lane_key].append(meta_list[i])
+        return ret_dict
+
 
     def delete_player(self, account_id):
         self.players.pop(int(account_id))
@@ -184,4 +209,12 @@ if __name__ == "__main__":
     ldb.load_match_history('data/match_history.csv')
     ldb.determine_meta()
 
-    ldb.get_all_meta()
+    print('aaaa')
+    all_meta = ldb.get_all_meta()
+    print(all_meta)
+    print('bbbb')
+    n_meta = ldb.get_n_meta(2)
+    print(n_meta)
+    print('cccc')
+    # ldb.get_all_meta()
+    # print('aaaa')

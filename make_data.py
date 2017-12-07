@@ -124,11 +124,11 @@ def create_recent_match_history_data():
 def create_match_history_data():
 	print('Creating match history data...')
 
-	# # MANUAL CHANGE: If Challenger csv has been made.
-	# with open('data/challenger_1m.csv', 'rb') as csvfile:
-	# 	r = csv.reader(csvfile, delimiter=',')
-	# 	for row in r:
-	# 		CHALLENGER_ACC_IDS[row[2]] = row[3]
+	# MANUAL CHANGE: If Challenger csv has been made.
+	with open('data/challenger_1m.csv', 'r') as csvfile:
+		r = csv.reader(csvfile, delimiter=',')
+		for row in r:
+			CHALLENGER_ACC_IDS[row[2]] = row[3]
 
 	# Write to CSV.
 	with open('data/match_history_1m.csv', 'w') as csvfile:
@@ -147,13 +147,20 @@ def create_match_history_data():
 			matches = match_history_data['matches']
 
 			# Loop through games.
-			solo_count = 0
-			for i in range(len(matches)):
-				# Check if game is a soloqueue game.
-				while solo_count < N_GAMES_PLAYER:
-					if matches[i]['queue'] == 420:
-						w.writerow([c_acc_id] + [matches[i]['lane']] + [str(matches[i]['gameId'])] + [str(matches[i]['champion'])] + [str(matches[i]['queue'])] + [matches[i]['role']] + [str(matches[i]['timestamp'])])
-						solo_count += 1  # increment solo count
+			print('Analyzing ' + str(c_acc_name) + '\'s games')
+			solo_q_count = 0
+			for game in range(0, len(matches)):
+				print('in for loop, len = ' + str(len(matches)))
+				print('solo_q_count: ' + str(solo_q_count))
+				if solo_q_count <= N_GAMES_PLAYER:
+					print('if')
+					# Check if game is a soloqueue game.
+					if matches[game]['queue'] == '420':
+						solo_q_count = solo_q_count + 1
+						w.writerow([c_acc_id] + [matches[game]['lane']] + [str(matches[game]['gameId'])] + [str(matches[game]['champion'])] + [str(matches[game]['queue'])] + [matches[game]['role']] + [str(matches[game]['timestamp'])])
+				else:
+					print('else')
+					break
 
 
 
@@ -172,7 +179,7 @@ def create_champion_data():
 	champions = data['data'].keys()
 
 	# Write to CSV
-	with open('data/champions_1m.csv', 'wb') as csvfile:
+	with open('data/champions_1m.csv', 'w') as csvfile:
 		w = csv.writer(csvfile, delimiter=',')
 		for c in champions:
 			# Write to CSV file.
@@ -180,8 +187,8 @@ def create_champion_data():
 
 
 if __name__ == '__main__':
-	create_challenger_data()
-	create_match_history_data()
+	# create_challenger_data()
+	# create_match_history_data()
 	# create_recent_match_history_data() # calls the api for 20
 	create_champion_data()
 
