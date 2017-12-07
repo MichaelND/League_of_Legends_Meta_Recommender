@@ -58,6 +58,11 @@ class TestLeageDatabase(unittest.TestCase):
 			self.assertEqual(champion['c_name'], 'Bard') #champion name
 			self.assertEqual(champion['image'], 'Bard.png') #image
 
+	def test_get_meta_rating(self):
+			self.reset_data()
+			meta_rating = self.ldb.get_meta_rating('Bard', 'BOTTOM')
+			self.assertEqual(meta_rating, 102) #meta rating
+
 	def test_set_champion(self):
 			self.reset_data()
 			champion = self.ldb.get_champion(CHAMP_ID)
@@ -143,7 +148,18 @@ class TestLeageDatabase(unittest.TestCase):
 			self.assertEqual(n_meta_dict['BOTTOM'][1][1], 219)
 
 	def test_update_meta_vote(self):
-		pass
+			self.reset_data()
+			champion_name = 'Katarina'
+			lane = 'MID'
+			meta_dict = self.ldb.get_all_meta()
+			orig_meta_rating = self.ldb.meta[lane][champion_name]
+
+			champ_id = 55
+			meta_vote = 2
+			self.ldb.update_meta_vote(champion_name, lane, meta_vote)
+			ret_rating = self.ldb.get_meta_rating(champion_name, lane)
+			self.assertNotEqual(ret_rating, orig_meta_rating)
+			self.assertEqual(meta_vote, ret_rating - orig_meta_rating)
 
 if __name__ == "__main__":
 	unittest.main()

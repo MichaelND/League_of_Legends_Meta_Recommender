@@ -48,7 +48,6 @@ class _league_database():
             c                   = {}
             c['c_name']         = values[0].rstrip('\n\r')
             c['image']          = values[2].rstrip('\n\r')
-            c['meta_rating']    = 0   # Set inital value to 0
             c['lane']           = None
 
             self.champions[champion_key] = c
@@ -98,6 +97,14 @@ class _league_database():
         retVal = {}
         try:
             retVal = self.matches.get(int(account_id))
+        except KeyError:
+            retVal = None
+        return retVal
+
+    def get_meta_rating(self, champion_name, lane):
+        retVal = {}
+        try:
+            retVal = self.meta[lane].get(str(champion_name))
         except KeyError:
             retVal = None
         return retVal
@@ -194,9 +201,9 @@ class _league_database():
                 ret_dict.update({lane_key:meta_list[0:num]})
         return ret_dict
 
-    def update_meta_vote(self, champion_key, vote):
+    def update_meta_vote(self, champion_name, lane, meta_vote):
         try:
-            self.champions['meta_rating'] += int(vote)
+            self.meta[lane][champion_name] += int(meta_vote)
         except Exception as e:
             print('Error' + str(e))
 
