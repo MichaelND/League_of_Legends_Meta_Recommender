@@ -1,6 +1,6 @@
 function get_top_meta() {
 	var request = new XMLHttpRequest();
-	request.open("GET", "http://student04.cse.nd.edu:51049/champion/15", true);
+	request.open("GET", "http://student04.cse.nd.edu:51049/meta/top", true);
 
 	request.onload = function(e) {
 		var response = JSON.parse(request.responseText);
