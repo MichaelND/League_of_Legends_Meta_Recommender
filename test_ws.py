@@ -210,13 +210,25 @@ class TestWebservice(unittest.TestCase):
         resp = json.loads(r.content.decode('utf-8'))
         self.assertEqual(resp['result'], 'success')
 
-        self.assertEqual(resp['TOP']['Chogath'], 97)
-        self.assertEqual(resp['JUNGLE']['LeeSin'], 251)
-        self.assertEqual(resp['MID']['Vladimir'], 65)
-        self.assertEqual(resp['BOTTOM']['Twitch'], 98)
+        self.assertEqual(resp['TOP'][0], ['Pantheon', 243])
+        self.assertEqual(resp['JUNGLE'][0], ['JarvanIV', 358])
+        self.assertEqual(resp['MID'][0], ['Ryze', 296])
+        self.assertEqual(resp['BOTTOM'][0], ['Tristana', 370])
 
     def test_meta_get_key(self):
-        pass
+        self.reset_data()
+        n_meta_champs = 5
+
+        # Make GET request
+        r = requests.get(META_URL + str(n_meta_champs))
+        self.assertTrue(self.is_json(r.content.decode('utf-8')))
+        resp = json.loads(r.content.decode('utf-8'))
+        self.assertEqual(resp['result'], 'success')
+
+        self.assertEqual(resp['TOP'][0], ['Pantheon', 243])
+        self.assertEqual(resp['JUNGLE'][0], ['JarvanIV', 358])
+        self.assertEqual(resp['MID'][0], ['Ryze', 296])
+        self.assertEqual(resp['BOTTOM'][0], ['Tristana', 370])
 
     def test_meta_post_key(self):
         pass
