@@ -28,9 +28,9 @@ class TestLeageDatabase(unittest.TestCase):
 			self.reset_data()
 			player = self.ldb.get_player(ACC_ID)
 			self.assertEqual(player['wins'], 319)
-			self.assertEqual(player['losses'], 243)
+			self.assertEqual(player['losses'], 245)
 			self.assertEqual(player['name'], 'CHIEF KEITH')
-			self.assertEqual(player['lp'], 653)
+			self.assertEqual(player['lp'], 649)
 
 	def test_get_player_null(self):
 			self.reset_data()
@@ -76,12 +76,12 @@ class TestLeageDatabase(unittest.TestCase):
 	def test_get_match_history(self):
 			self.reset_data()
 			match_history = self.ldb.get_match_history(ACC_ID)
-			self.assertEqual(match_history[0]['lane'], 'BOTTOM')
-			self.assertEqual(match_history[0]['game_id'], 2656410494)
-			self.assertEqual(match_history[0]['champion_id'], 429)
+			self.assertEqual(match_history[0]['lane'], 'MID')
+			self.assertEqual(match_history[0]['game_id'], 2661531048)
+			self.assertEqual(match_history[0]['champion_id'], 101)
 			self.assertEqual(match_history[0]['queue'], 420)
-			self.assertEqual(match_history[0]['role'], 'DUO_CARRY')
-			self.assertEqual(match_history[0]['timestamp'], 1511683429568)
+			self.assertEqual(match_history[0]['role'], 'SOLO')
+			self.assertEqual(match_history[0]['timestamp'], 1512267077431)
 
 	def test_set_match_history(self):
 			self.reset_data()
@@ -107,6 +107,20 @@ class TestLeageDatabase(unittest.TestCase):
 			match = self.ldb.get_match_history(ACC_ID)
 			self.assertEqual(match, None)
 
+	#- Advanced Function Tests ------------------------#
+	def test_determine_meta(self):
+			self.reset_data()
+			self.ldb.determine_meta()
+			# self.assertEqual(self.ldb.matches[429], 39)
+
+	def test_get_all_meta(self):
+		pass
+
+	def test_get_n_meta(self):
+		pass
+
+	def test_update_meta_vote(self):
+		pass
 
 if __name__ == "__main__":
 	unittest.main()

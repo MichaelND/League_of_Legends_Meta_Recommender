@@ -50,21 +50,21 @@ class TestWebservice(unittest.TestCase):
         self.assertTrue(self.is_json(r.content.decode('utf-8')))
         resp = json.loads(r.content.decode('utf-8'))
         self.assertEqual(resp['result'], 'success')
-        self.assertEqual(resp['wins'], 317)
-        self.assertEqual(resp['losses'], 243)
+        self.assertEqual(resp['wins'], 319)
+        self.assertEqual(resp['losses'], 245)
         self.assertEqual(resp['acc_id'], '234873632')
         self.assertEqual(resp['name'], 'CHIEF KEITH')
-        self.assertEqual(resp['lp'], 653)
+        self.assertEqual(resp['lp'], 649)
 
     def test_players_post(self):
         #post without account id
         self.reset_data()
         
         player = {}
-        player['wins']      = 317
-        player['losses']    = 243
+        player['wins']      = 319
+        player['losses']    = 245
         player['name']      = 'CHIEF KEITH'
-        player['lp']        = 653
+        player['lp']        = 649
         player['acc_id']    = '234873632'
 
         r = requests.post(PLAYERS_URL, data = json.dumps(player))
@@ -167,7 +167,6 @@ class TestWebservice(unittest.TestCase):
         t['c_name'] = 'Michael'
         t['image'] = 'Michael.png'
         t['champ_id'] = champ_id
-        # TODO: META VOTE
 
         # Make POST request
         r = requests.post(CHAMPION_URL, data = json.dumps(t))
@@ -201,7 +200,16 @@ class TestWebservice(unittest.TestCase):
         self.assertEqual(resp['result'], 'error')
         self.assertEqual(resp['message'], 'champion not found')
 
-    #TODO: Meta Unit test
+    # /meta/ unit test
+    def test_meta_get(self):
+        pass
+
+    def test_meta_get_key(self):
+        pass
+
+    def test_meta_post_key(self):
+        pass
+
 
 if __name__ == '__main__':
     print('Testing Port number: ', PORT_NUM)

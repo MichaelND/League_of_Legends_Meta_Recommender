@@ -122,7 +122,6 @@ class _league_database():
         # Update data.
         self.champions[champion_key]['c_name']          = data['c_name']
         self.champions[champion_key]['image']           = data['image']
-        self.champions[champion_key]['meta_rating']     = data['meta_rating']
 
     def set_match_history(self, account_id, data, gameIdx):
         account_id = int(account_id)
@@ -136,55 +135,6 @@ class _league_database():
         self.matches[account_id][gameIdx-1]['queue']        = data['queue']
         self.matches[account_id][gameIdx-1]['role']         = data['role']
         self.matches[account_id][gameIdx-1]['timestamp']    = data['timestamp']
-
-    # TODO: determine better weighting
-    def put_meta_vote(self, champion_key, meta_vote):
-        self.champions[champion_key]['meta_rating'] += meta_vote
-
-    #- Advanced Functions -------------------------------------#
-    def determine_meta(self):
-        self.meta['TOP']     = {}
-        self.meta['JUNGLE']  = {}
-        self.meta['MID']     = {}
-        self.meta['BOTTOM']  = {}
-
-        # Loop through all players and their matches.
-        for acc_id, values in self.matches.items():
-            # Loop through a player's matches
-            for i in range(0, len(values)): 
-                for j in range(0, len(values[i])):
-                    # Get match
-                    match = values[j]
-
-                    # Store champion indexed by lane
-                    lane = match['lane']
-                    game_id = match['game_id']
-
-                    # Get champion by champ id.
-                    champ_id = match['champion_id']
-                    try:
-                        champion = self.champions[champ_id]
-
-                        # Store indexing by lane.
-                        try:
-                            self.meta[lane][champion['c_name']] += 1  # increment meta counter
-                        except:
-                            self.meta[lane].update({champion['c_name'] : 0}) # Add to meta dictionary for the first time
-                    except KeyError as e:
-                        continue
-
-    def get_all_meta(self):
-        return {'TOP':self.meta['TOP'],'JUNGLE':self.meta['JUNGLE'],'MID':self.meta['MID'],'BOTTOM':self.meta['BOTTOM']}        
-
-    def get_n_meta(self, num):
-        ret_dict = {}
-
-        for lane_key, lane_val_dict in self.meta.items():               # Loop through meta
-            # Source: http://bytesizebio.net/2013/04/03/stupid-python-tricks-3296-sorting-a-dictionary-by-its-values/
-            meta_list = [(k,v) for v,k in sorted([(v,k) for k,v in lane_val_dict.items()],reverse=True)]
-            ret_dict.update({lane_key:meta_list[0:num]})
-        return ret_dict
-
 
     def delete_player(self, account_id):
         self.players.pop(int(account_id))
@@ -200,12 +150,60 @@ class _league_database():
         self.champions  = {}
         self.matches    = {}
 
+    #- Advanced Functions -------------------------------------#
+    def determine_meta(self):
+        self.meta['TOP']     = {}
+        self.meta['JUNGLE']  = {}
+        self.meta['MID']     = {}
+        self.meta['BOTTOM']  = {}
+
+        # Loop through all players and their matches.
+        for acc_id, values in self.matches.items():
+            # Loop through a player's matches
+            for i in range(0, len(values)): 
+                match = values[i]
+
+                # Store champion indexed by lane
+                lane = match['lane']
+                game_id = match['game_id']
+
+                # Get champion by champ id.
+                champ_id = match['champion_id']
+                try:
+                    champion = self.champions[champ_id]
+
+                    # Store indexing by lane.
+                    try:
+                        self.meta[lane][champion['c_name']] += 1  # increment meta counter
+                    except:
+                        self.meta[lane].update({champion['c_name'] : 0}) # Add to meta dictionary for the first time
+                except KeyError as e:
+                    continue
+
+    def get_all_meta(self):
+        return {'TOP':self.meta['TOP'],'JUNGLE':self.meta['JUNGLE'],'MID':self.meta['MID'],'BOTTOM':self.meta['BOTTOM']}        
+
+    def get_n_meta(self, num):
+        ret_dict = {}
+
+        for lane_key, lane_val_dict in self.meta.items():               # Loop through meta
+            # Source: http://bytesizebio.net/2013/04/03/stupid-python-tricks-3296-sorting-a-dictionary-by-its-values/
+            meta_list = [(k,v) for v,k in sorted([(v,k) for k,v in lane_val_dict.items()],reverse=True)]
+            ret_dict.update({lane_key:meta_list[0:num]})
+        return ret_dict
+
+    def update_meta_vote(self, champion_key, vote):
+        try:
+            self.champions['meta_rating'] += int(vote)
+        except Exception as e:
+            print('Error' + str(e))
+
 
 if __name__ == "__main__":
     ldb = _league_database()
-    ldb.load_players('data/challenger.csv')
-    ldb.load_champions('data/champions.csv')
-    ldb.load_match_history('data/match_history.csv')
+    ldb.load_players('data/challenger_1m.csv')
+    ldb.load_champions('data/champions_1m.csv')
+    ldb.load_match_history('data/match_history_1m.csv')
     ldb.determine_meta()
 
     all_meta = ldb.get_all_meta()

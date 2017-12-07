@@ -31,6 +31,7 @@ def init_db(ldb):
     ldb.load_players(PLAYER_DATA_PATH)
     ldb.load_champions(CHAMPION_DATA_PATH)
     ldb.load_match_history(MATCH_HISTORY_DATA_PATH)
+    ldb.determine_meta()
 
 #*******************************************************
 # start_service
@@ -70,13 +71,13 @@ def start_service():
     dispatcher.connect('champion_post', '/champion/', controller = champion_controller, action = 'POST', conditions = dict(method=['POST']))
     #/champion/:key
     dispatcher.connect('champion_get_key', '/champion/:key', controller = champion_controller, action = 'GET_KEY', conditions = dict(method=['GET']))
-    dispatcher.connect('champion_put_key', '/champion/:key', controller = champion_controller, action = 'PUT_KEY', conditions = dict(method=['PUT']))
     dispatcher.connect('champion_delete_key', '/champion/:key', controller = champion_controller, action = 'DELETE_KEY', conditions = dict(method=['DELETE']))
 
     #/meta/
     dispatcher.connect('meta_get', '/meta/', controller = meta_controller, action = 'GET', conditions = dict(method=['GET']))
     #/meta/:key
     dispatcher.connect('meta_get_key', '/meta/:key', controller = meta_controller, action = 'GET_KEY', conditions = dict(method=['GET']))
+    dispatcher.connect('meta_post_key', '/meta/:key', controller = meta_controller, action = 'POST_KEY', conditions = dict(method=['POST']))
 
     #/reset/
     dispatcher.connect('reset_put', '/reset/', controller = reset_controller, action = 'PUT', conditions = dict(method=['PUT']))
