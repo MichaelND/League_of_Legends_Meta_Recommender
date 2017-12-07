@@ -15,20 +15,31 @@ class MetaController(object):
 
     def GET(self):
         #This function will make a request to our webservice to get the meta for each lane.
-        output = {}
+        output = {'result' : 'success'}
 
-        #TODO: Implementation on API side
-        output['result'] = 'success'
-
+        try:
+            output.update(self.ldb.get_all_meta())
+        except Exception as e:
+            print('Error: ' + str(e))
+            output['result'] = 'error'
         return json.dumps(output)
 
     def GET_KEY(self, key):
         #This function will make a request to our webservice to get the meta for a specific lane. 
-        output = {}
-
+        output = {'result' : 'success'}
         key = int(key)
 
-        #TODO: Implementation on API side
-        output['result'] = 'success'
+        try:
+            output.update(self.ldb.get_n_meta(key))
+            print(output)
+        except Exception as e:
+            print('Error: ' + str(e))
+            output['result'] = 'error'
+        return json.dumps(output)
+
+    def POST_KEY(self, key):
+        #This function will make a request to our webservice to get the meta for a specific lane. 
+        output = {'result' : 'success'}
+        key = int(key)
         
         return json.dumps(output)

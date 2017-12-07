@@ -202,7 +202,18 @@ class TestWebservice(unittest.TestCase):
 
     # /meta/ unit test
     def test_meta_get(self):
-        pass
+        self.reset_data()
+
+        # Make GET request
+        r = requests.get(META_URL)
+        self.assertTrue(self.is_json(r.content.decode('utf-8')))
+        resp = json.loads(r.content.decode('utf-8'))
+        self.assertEqual(resp['result'], 'success')
+
+        self.assertEqual(resp['TOP']['Chogath'], 97)
+        self.assertEqual(resp['JUNGLE']['LeeSin'], 251)
+        self.assertEqual(resp['MID']['Vladimir'], 65)
+        self.assertEqual(resp['BOTTOM']['Twitch'], 98)
 
     def test_meta_get_key(self):
         pass

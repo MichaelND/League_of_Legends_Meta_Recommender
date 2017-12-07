@@ -117,10 +117,10 @@ class TestLeageDatabase(unittest.TestCase):
 	def test_get_all_meta(self):
 			self.reset_data()
 			all_meta_dict = self.ldb.get_all_meta()
-			self.assertEqual(all_meta_dict['TOP']['Jayce'], 220)
-			self.assertEqual(all_meta_dict['JUNGLE']['Khazix'], 200)
-			self.assertEqual(all_meta_dict['MID']['Azir'], 254)
-			self.assertEqual(all_meta_dict['BOTTOM']['Ashe'], 81)
+			self.assertEqual(all_meta_dict['TOP'][0], ('Pantheon', 243))
+			self.assertEqual(all_meta_dict['JUNGLE'][0], ('JarvanIV', 358))
+			self.assertEqual(all_meta_dict['MID'][0], ('Ryze', 296))
+			self.assertEqual(all_meta_dict['BOTTOM'][0], ('Tristana', 370))
 
 	def test_get_n_meta(self):
 			self.reset_data()

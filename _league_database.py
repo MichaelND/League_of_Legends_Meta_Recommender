@@ -188,7 +188,12 @@ class _league_database():
                     continue
 
     def get_all_meta(self):
-        return {'TOP':self.meta['TOP'],'JUNGLE':self.meta['JUNGLE'],'MID':self.meta['MID'],'BOTTOM':self.meta['BOTTOM']}        
+        ret_dict = {}
+
+        for lane_key, lane_val_dict in self.meta.items():               # Loop through meta
+            meta_list = [(k,v) for v,k in sorted([(v,k) for k,v in lane_val_dict.items()],reverse=True)]
+            ret_dict.update({lane_key:meta_list[0:-1]})
+        return ret_dict
 
     def get_n_meta(self, num):
         ret_dict = {}
