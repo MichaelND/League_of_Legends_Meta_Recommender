@@ -151,7 +151,7 @@ class _league_database():
         self.matches    = {}
 
     #- Advanced Functions -------------------------------------#
-    def determine_meta(self):
+    def init_meta(self):
         self.meta['TOP']     = {}
         self.meta['JUNGLE']  = {}
         self.meta['MID']     = {}
@@ -176,7 +176,7 @@ class _league_database():
                     try:
                         self.meta[lane][champion['c_name']] += 1  # increment meta counter
                     except:
-                        self.meta[lane].update({champion['c_name'] : 0}) # Add to meta dictionary for the first time
+                        self.meta[lane].update({champion['c_name'] : 1}) # Add to meta dictionary for the first time
                 except KeyError as e:
                     continue
 
@@ -186,10 +186,12 @@ class _league_database():
     def get_n_meta(self, num):
         ret_dict = {}
 
-        for lane_key, lane_val_dict in self.meta.items():               # Loop through meta
-            # Source: http://bytesizebio.net/2013/04/03/stupid-python-tricks-3296-sorting-a-dictionary-by-its-values/
-            meta_list = [(k,v) for v,k in sorted([(v,k) for k,v in lane_val_dict.items()],reverse=True)]
-            ret_dict.update({lane_key:meta_list[0:num]})
+        # Make sure num is positive and more than 0
+        if num >= 0:
+            for lane_key, lane_val_dict in self.meta.items():               # Loop through meta
+                # Source: http://bytesizebio.net/2013/04/03/stupid-python-tricks-3296-sorting-a-dictionary-by-its-values/
+                meta_list = [(k,v) for v,k in sorted([(v,k) for k,v in lane_val_dict.items()],reverse=True)]
+                ret_dict.update({lane_key:meta_list[0:num]})
         return ret_dict
 
     def update_meta_vote(self, champion_key, vote):
@@ -204,7 +206,7 @@ if __name__ == "__main__":
     ldb.load_players('data/challenger_1m.csv')
     ldb.load_champions('data/champions_1m.csv')
     ldb.load_match_history('data/match_history_1m.csv')
-    ldb.determine_meta()
+    ldb.init_meta()
 
     all_meta = ldb.get_all_meta()
     print(all_meta)

@@ -23,6 +23,7 @@ class TestLeageDatabase(unittest.TestCase):
 			self.ldb.load_players('data/challenger_1m.csv')
 			self.ldb.load_champions('data/champions_1m.csv')
 			self.ldb.load_match_history('data/match_history_1m.csv')
+			self.ldb.init_meta()
 
 	def test_get_player(self):
 			self.reset_data()
@@ -108,16 +109,38 @@ class TestLeageDatabase(unittest.TestCase):
 			self.assertEqual(match, None)
 
 	#- Advanced Function Tests ------------------------#
-	def test_determine_meta(self):
-			self.reset_data()
-			self.ldb.determine_meta()
-			# self.assertEqual(self.ldb.matches[429], 39)
-
 	def test_get_all_meta(self):
-		pass
+			self.reset_data()
+			all_meta_dict = self.ldb.get_all_meta()
+			self.assertEqual(all_meta_dict['TOP']['Jayce'], 220)
+			self.assertEqual(all_meta_dict['JUNGLE']['Khazix'], 200)
+			self.assertEqual(all_meta_dict['MID']['Azir'], 254)
+			self.assertEqual(all_meta_dict['BOTTOM']['Ashe'], 81)
 
 	def test_get_n_meta(self):
-		pass
+			self.reset_data()
+			n_meta_dict = self.ldb.get_n_meta(-1)
+			self.assertEqual(len(n_meta_dict), 0)
+
+			n_meta_dict = self.ldb.get_n_meta(2)
+			for k, v in n_meta_dict.items():
+				self.assertEqual(len(v), 2)
+			self.assertEqual(n_meta_dict['TOP'][0][0], 'Pantheon')
+			self.assertEqual(n_meta_dict['TOP'][0][1], 243)
+			self.assertEqual(n_meta_dict['TOP'][1][0], 'Jayce')
+			self.assertEqual(n_meta_dict['TOP'][1][1], 220)
+			self.assertEqual(n_meta_dict['JUNGLE'][0][0], 'JarvanIV')
+			self.assertEqual(n_meta_dict['JUNGLE'][0][1], 358)
+			self.assertEqual(n_meta_dict['JUNGLE'][1][0], 'RekSai')
+			self.assertEqual(n_meta_dict['JUNGLE'][1][1], 264)
+			self.assertEqual(n_meta_dict['MID'][0][0], 'Ryze')
+			self.assertEqual(n_meta_dict['MID'][0][1], 296)
+			self.assertEqual(n_meta_dict['MID'][1][0], 'Azir')
+			self.assertEqual(n_meta_dict['MID'][1][1], 254)
+			self.assertEqual(n_meta_dict['BOTTOM'][0][0], 'Tristana')
+			self.assertEqual(n_meta_dict['BOTTOM'][0][1], 370)
+			self.assertEqual(n_meta_dict['BOTTOM'][1][0], 'Kalista')
+			self.assertEqual(n_meta_dict['BOTTOM'][1][1], 219)
 
 	def test_update_meta_vote(self):
 		pass
