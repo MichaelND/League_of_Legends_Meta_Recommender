@@ -69,3 +69,12 @@ function get_bot_sup_meta() {
 	// }
 	// request.send(json_dict);
 }
+
+
+// On window load.
+$(document).ready(function() {
+	v = document.getElementById('video')
+	v.play();
+});
+
+
