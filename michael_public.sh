@@ -14,7 +14,7 @@ else
     echo "Failed mkdir"
 fi
 
-if cp -rf ~/public-paradigms-fall17/ParadigmsFinal/www* ${PUB_DIR}; then
+if cp -rf ~/public-paradigms-fall17/ParadigmsFinal/www/* ${PUB_DIR}; then
     echo "Successful copy"
 else
     echo "Failed copy"
