@@ -25,7 +25,7 @@ CHALLENGER_ACC_IDS	= {}
 
 # Turn string to bytes
 def stob(string):
-	return string.encode(string)
+	return string.encode('utf-8')
 
 def make_requests(URL):
 	# Make request.
@@ -77,19 +77,14 @@ def create_challenger_data():
 		CHALLENGER_ACC_IDS[n] = str(data['accountId'])
 
 	# Write to CSV.
-	with open('data/challenger_1m.csv', 'wb') as csvfile:
+	with open('data/challenger_1m.csv', 'w') as csvfile:
 		w = csv.writer(csvfile, delimiter=',')
 		for c in challenger_players:
 			n = c['playerOrTeamName'].rstrip()
 			c_id = CHALLENGER_ACC_IDS[n]  # Get ID
 
 			# Write to CSV file.
-			print(type(c['wins']))
-			print(type(c['losses']))
-			print(type(n))
-			print(type(c_id))
-			print(type(c['leaguePoints']))
-			w.writerow([c['wins']] + [c['losses']] + [stob(n)] + [c_id] + [c['leaguePoints']])
+			w.writerow([str(c['wins']), c['losses'], n, c_id, str(c['leaguePoints'])])
 
 
 # DEPRECATED
@@ -136,7 +131,7 @@ def create_match_history_data():
 	# 		CHALLENGER_ACC_IDS[row[2]] = row[3]
 
 	# Write to CSV.
-	with open('data/match_history_1m.csv', 'wb') as csvfile:
+	with open('data/match_history_1m.csv', 'w') as csvfile:
 		w = csv.writer(csvfile, delimiter=',')
 
 		# Loop through challenger ids.
@@ -158,6 +153,7 @@ def create_match_history_data():
 				while solo_count < N_GAMES_PLAYER:
 					if matches[i]['queue'] == 420:
 						w.writerow([c_acc_id] + [matches[i]['lane']] + [str(matches[i]['gameId'])] + [str(matches[i]['champion'])] + [str(matches[i]['queue'])] + [matches[i]['role']] + [str(matches[i]['timestamp'])])
+						solo_count += 1  # increment solo count
 
 
 

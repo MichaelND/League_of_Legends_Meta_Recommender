@@ -10,8 +10,10 @@ class _league_database():
         self.players    = {}
         # stores the champion name and image based off of the champion key
         self.champions  = {}
-        # stores the user's input for whether a champion is meta
+        # stores the matches data
         self.matches    = {}
+        # stores the champion data by meta and lane
+        self.meta       = {}
         account_id      = 0
         champion_key    = 0
 
@@ -39,13 +41,15 @@ class _league_database():
         for line in f:
             # store the data from the champions file into dictionary
 
-            values          = line.split(",")
-            champion_key    = int(values[1].rstrip('\n\r'))
+            values              = line.split(",")
+            champion_key        = int(values[1].rstrip('\n\r'))
 
             # Create input dictionary.
-            c               = {}
-            c['c_name']     = values[0].rstrip('\n\r')
-            c['image']      = values[2].rstrip('\n\r')
+            c                   = {}
+            c['c_name']         = values[0].rstrip('\n\r')
+            c['image']          = values[2].rstrip('\n\r')
+            c['meta_rating']    = 0   # Set inital value to 0
+            c['lane']           = None
 
             self.champions[champion_key] = c
         f.close()
@@ -59,13 +63,13 @@ class _league_database():
             account_id = int(values[0].rstrip('\n\r'))
 
             # Create input dictionary.
-            m               = {}
-            m['lane']       = values[1].rstrip('\n\r')
-            m['game_id']     = int(values[2].rstrip('\n\r'))
-            m['champion_id']   = int(values[3].rstrip('\n\r'))
-            m['queue']      = int(values[4].rstrip('\n\r'))
-            m['role']       = values[5].rstrip('\n\r')
-            m['timestamp']  = int(values[6].rstrip('\n\r'))
+            m                   = {}
+            m['lane']           = values[1].rstrip('\n\r')
+            m['game_id']        = int(values[2].rstrip('\n\r'))
+            m['champion_id']    = int(values[3].rstrip('\n\r'))
+            m['queue']          = int(values[4].rstrip('\n\r'))
+            m['role']           = values[5].rstrip('\n\r')
+            m['timestamp']      = int(values[6].rstrip('\n\r'))
 
             try:
                 self.matches[account_id].append(m)
@@ -116,8 +120,9 @@ class _league_database():
             self.champions[champion_key] = {}
 
         # Update data.
-        self.champions[champion_key]['c_name']  = data['c_name']
-        self.champions[champion_key]['image']   = data['image']
+        self.champions[champion_key]['c_name']          = data['c_name']
+        self.champions[champion_key]['image']           = data['image']
+        self.champions[champion_key]['meta_rating']     = data['meta_rating']
 
     def set_match_history(self, account_id, data, gameIdx):
         account_id = int(account_id)
@@ -131,6 +136,31 @@ class _league_database():
         self.matches[account_id][gameIdx-1]['queue']        = data['queue']
         self.matches[account_id][gameIdx-1]['role']         = data['role']
         self.matches[account_id][gameIdx-1]['timestamp']    = data['timestamp']
+
+    # TODO: determine better weighting
+    def put_meta_vote(self, champion_key, meta_vote):
+        self.champions[champion_key]['meta_rating'] += meta_vote
+
+    #- Advanced Functions -------------------------------------#
+    def determine_meta(self):
+        meta = dict()
+
+        # Loop through all matches.
+        for v in self.matches.values():
+            for match in range(0, len(v)):
+                print(v[match])
+                # meta[]
+
+    def get_all_meta(self):
+        pass
+        # meta_top = self.get_lane_meta('TOP')
+        # meta_jgl = self.get_lane_meta('JUNGLE')
+        # meta_mid = self.get_lane_meta('MID')
+        # meta_bot = self.get_lane_meta('BOT')
+        # meta_sup = self.get_lane_meta('SUPPORT')
+
+    def get_lane_meta(self, lane):
+        pass
 
     def delete_player(self, account_id):
         self.players.pop(int(account_id))
@@ -147,15 +177,11 @@ class _league_database():
         self.matches    = {}
 
 
-	# def set_meta(self):
-
-	# def get_all_meta(self):
-
-	# def get_lane_meta(self):
-
 if __name__ == "__main__":
     ldb = _league_database()
     ldb.load_players('data/challenger.csv')
     ldb.load_champions('data/champions.csv')
     ldb.load_match_history('data/match_history.csv')
+    ldb.determine_meta()
 
+    ldb.get_all_meta()
