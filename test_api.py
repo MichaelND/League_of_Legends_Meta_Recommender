@@ -20,17 +20,18 @@ class TestLeageDatabase(unittest.TestCase):
 	def reset_data(self):
 			#reset all data to begin with
 			self.ldb.delete_all_dictionaries()
-			self.ldb.load_players('data/challenger.csv')
-			self.ldb.load_champions('data/champions.csv')
-			self.ldb.load_match_history('data/match_history.csv')
+			self.ldb.load_players('data/challenger_1m.csv')
+			self.ldb.load_champions('data/champions_1m.csv')
+			self.ldb.load_match_history('data/match_history_1m.csv')
+			self.ldb.init_meta()
 
 	def test_get_player(self):
 			self.reset_data()
 			player = self.ldb.get_player(ACC_ID)
-			self.assertEqual(player['wins'], 317)
-			self.assertEqual(player['losses'], 243)
+			self.assertEqual(player['wins'], 319)
+			self.assertEqual(player['losses'], 245)
 			self.assertEqual(player['name'], 'CHIEF KEITH')
-			self.assertEqual(player['lp'], 653)
+			self.assertEqual(player['lp'], 649)
 
 	def test_get_player_null(self):
 			self.reset_data()
@@ -57,6 +58,11 @@ class TestLeageDatabase(unittest.TestCase):
 			self.assertEqual(champion['c_name'], 'Bard') #champion name
 			self.assertEqual(champion['image'], 'Bard.png') #image
 
+	def test_get_meta_rating(self):
+			self.reset_data()
+			meta_rating = self.ldb.get_meta_rating('Bard', 'BOTTOM')
+			self.assertEqual(meta_rating, 102) #meta rating
+
 	def test_set_champion(self):
 			self.reset_data()
 			champion = self.ldb.get_champion(CHAMP_ID)
@@ -76,12 +82,12 @@ class TestLeageDatabase(unittest.TestCase):
 	def test_get_match_history(self):
 			self.reset_data()
 			match_history = self.ldb.get_match_history(ACC_ID)
-			self.assertEqual(match_history[0]['lane'], 'BOTTOM')
-			self.assertEqual(match_history[0]['game_id'], 2656410494)
-			self.assertEqual(match_history[0]['champion_id'], 429)
+			self.assertEqual(match_history[0]['lane'], 'MID')
+			self.assertEqual(match_history[0]['game_id'], 2661531048)
+			self.assertEqual(match_history[0]['champion_id'], 101)
 			self.assertEqual(match_history[0]['queue'], 420)
-			self.assertEqual(match_history[0]['role'], 'DUO_CARRY')
-			self.assertEqual(match_history[0]['timestamp'], 1511683429568)
+			self.assertEqual(match_history[0]['role'], 'SOLO')
+			self.assertEqual(match_history[0]['timestamp'], 1512267077431)
 
 	def test_set_match_history(self):
 			self.reset_data()
@@ -107,6 +113,53 @@ class TestLeageDatabase(unittest.TestCase):
 			match = self.ldb.get_match_history(ACC_ID)
 			self.assertEqual(match, None)
 
+	#- Advanced Function Tests ------------------------#
+	def test_get_all_meta(self):
+			self.reset_data()
+			all_meta_dict = self.ldb.get_all_meta()
+			self.assertEqual(all_meta_dict['TOP'][0], ('Pantheon', 243))
+			self.assertEqual(all_meta_dict['JUNGLE'][0], ('JarvanIV', 358))
+			self.assertEqual(all_meta_dict['MID'][0], ('Ryze', 296))
+			self.assertEqual(all_meta_dict['BOTTOM'][0], ('Tristana', 370))
+
+	def test_get_n_meta(self):
+			self.reset_data()
+			n_meta_dict = self.ldb.get_n_meta(-1)
+			self.assertEqual(len(n_meta_dict), 0)
+
+			n_meta_dict = self.ldb.get_n_meta(2)
+			for k, v in n_meta_dict.items():
+				self.assertEqual(len(v), 2)
+			self.assertEqual(n_meta_dict['TOP'][0][0], 'Pantheon')
+			self.assertEqual(n_meta_dict['TOP'][0][1], 243)
+			self.assertEqual(n_meta_dict['TOP'][1][0], 'Jayce')
+			self.assertEqual(n_meta_dict['TOP'][1][1], 220)
+			self.assertEqual(n_meta_dict['JUNGLE'][0][0], 'JarvanIV')
+			self.assertEqual(n_meta_dict['JUNGLE'][0][1], 358)
+			self.assertEqual(n_meta_dict['JUNGLE'][1][0], 'RekSai')
+			self.assertEqual(n_meta_dict['JUNGLE'][1][1], 264)
+			self.assertEqual(n_meta_dict['MID'][0][0], 'Ryze')
+			self.assertEqual(n_meta_dict['MID'][0][1], 296)
+			self.assertEqual(n_meta_dict['MID'][1][0], 'Azir')
+			self.assertEqual(n_meta_dict['MID'][1][1], 254)
+			self.assertEqual(n_meta_dict['BOTTOM'][0][0], 'Tristana')
+			self.assertEqual(n_meta_dict['BOTTOM'][0][1], 370)
+			self.assertEqual(n_meta_dict['BOTTOM'][1][0], 'Kalista')
+			self.assertEqual(n_meta_dict['BOTTOM'][1][1], 219)
+
+	def test_update_meta_vote(self):
+			self.reset_data()
+			champion_name = 'Katarina'
+			lane = 'MID'
+			meta_dict = self.ldb.get_all_meta()
+			orig_meta_rating = self.ldb.meta[lane][champion_name]
+
+			champ_id = 55
+			meta_vote = 2
+			self.ldb.update_meta_vote(champion_name, lane, meta_vote)
+			ret_rating = self.ldb.get_meta_rating(champion_name, lane)
+			self.assertNotEqual(ret_rating, orig_meta_rating)
+			self.assertEqual(meta_vote, ret_rating - orig_meta_rating)
 
 if __name__ == "__main__":
 	unittest.main()

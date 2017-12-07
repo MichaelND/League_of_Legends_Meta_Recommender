@@ -51,8 +51,10 @@ class ChampionController(object):
 
         try:
             output['result']    = 'success'
+            print(req)
             self.ldb.set_champion(req['champ_id'], req)
-        except KeyError:
+        except KeyError as e:
+            print(e)
             output['result']    = 'error'
             output['message']   = 'invalid request'
 
