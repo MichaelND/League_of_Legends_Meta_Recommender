@@ -1,5 +1,6 @@
-Champion Splasharts
+Champion Loading Screen Art (Splashart)
 http://ddragon.leagueoflegends.com/cdn/img/champion/splash/Aatrox_0.jpg
 
-
+Champion Image Icons
+http://ddragon.leagueoflegends.com/cdn/6.24.1/img/champion/Aatrox.png
 
