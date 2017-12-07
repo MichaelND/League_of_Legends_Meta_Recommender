@@ -8,9 +8,84 @@
 
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous">
+
+    <style>
+    div.video {
+      position: relative;
+    } 
+
+    div.Title {
+      position: absolute;
+      top: 30px;
+      left: 10px;
+    }
+
+    div.buttons {
+      position: absolute;
+      top: 80px;
+      left: 14px;
+    }
+    div.Top {
+      position: absolute;
+      top: 180px;
+      left: 14px;
+    }
+    div.Mid {
+      position: absolute;
+      top: 250px;
+      left: 14px;
+    }
+    div.Jungle {
+      position: absolute;
+      top: 320px;
+      left: 14px;
+    }
+    div.Bot-Sup {
+      position: absolute;
+      top: 390px;
+      left: 14px;
+    }
+    
+    </style>
   </head>
   <body>
-    <h1>Hello, Big Mike!</h1>
+    <!--  Content  -->
+    <div class="video">
+        <video id="video" muted="muted" width="100%" height="100%" onclick="play();">
+          <source type="video/mp4" src="Snowdown.mp4" />
+        </video>
+        </video>
+    </div>
+
+    <div class="buttons">
+      <div class="btn-group btn-group-lg">
+      <button type="button" class="btn btn-danger" onclick="get_top_meta();">Top</button>
+      <button type="button" class="btn btn-danger">Mid</button>
+      <button type="button" class="btn btn-danger">Jungle</button>
+      <button type="button" class="btn btn-danger">Bot/Support</button>
+      </div>
+    </div>
+
+    <div class="Title">
+      <h3 class="bg-danger text-white">League of Legends Meta Geta</h3>
+    </div>
+
+    <div class="Top">
+      <h2 class="bg-danger text-white">Top <span class="label label-default"></span></h2>
+    </div>
+
+    <div class="Mid">
+      <h2 class="bg-danger text-white">Mid <span class="label label-default"></span></h2>
+    </div>
+
+    <div class="Jungle">
+      <h2 class="bg-danger text-white">Jungle <span class="label label-default"></span></h2>
+    </div>
+
+    <div class="Bot-Sup">
+      <h2 class="bg-danger text-white">Bot/Sup <span class="label label-default"></span></h2>
+    </div>
+
 
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
@@ -18,6 +93,8 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js" integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh" crossorigin="anonymous"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js" integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ" crossorigin="anonymous"></script>
     <!-- main.js -->
+    <script type="text/javascript" src="js/json2.js"></script>
+    <script type="text/javascript" src="js/paradigms.js"></script>
     <script type="text/javascript" src="js/main.js"></script>
   </body>
 </html>
