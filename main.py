@@ -15,6 +15,7 @@ from player_controller import PlayerController
 from meta_controller import MetaController
 from champion_controller import ChampionController
 from reset_controller import ResetController
+from option_controller import OptionController
 
 #*******************************************************
 # Global Variables
@@ -34,6 +35,15 @@ def init_db(ldb):
     ldb.init_meta()
 
 #*******************************************************
+# CORS
+#*******************************************************
+
+def CORS():
+    cherrypy.response.headers["Access-Control-Allow-Origin"] = "*"
+    cherrypy.response.headers["Access-Control-Allow-Methods"] = "GET, PUT, POST, DELETE, OPTIONS"
+    cherrypy.response.headers["Access-Control-Allow-Credentials"] = "*"
+
+#*******************************************************
 # start_service
 #*******************************************************
 def start_service():
@@ -50,7 +60,7 @@ def start_service():
     meta_controller = MetaController(ldb)
     champion_controller = ChampionController(ldb)
     reset_controller = ResetController(ldb, PLAYER_DATA_PATH, MATCH_HISTORY_DATA_PATH, CHAMPION_DATA_PATH)
-
+    option_controller = OptionController()
 
     #/player/
     dispatcher.connect('player_get', '/players/', controller = player_controller, action = 'GET', conditions = dict(method=['GET']))
@@ -86,12 +96,37 @@ def start_service():
     dispatcher.connect('reset_put_matches_key', '/reset/matches/:key', controller = reset_controller, action = 'PUT_MATCH_KEY', conditions = dict(method=['PUT']))
     dispatcher.connect('reset_put_champion_key', '/reset/champion/:key', controller = reset_controller, action = 'PUT_CHAMPION_KEY', conditions = dict(method=['PUT']))
 
+    #Connect
+    dispatcher.connect('player_get_option', '/players/', controller = option_controller, action = 'OPTIONS', conditions = dict(method=['OPTIONS']))
+    dispatcher.connect('player_post_option', '/players/', controller = option_controller, action = 'OPTIONS', conditions = dict(method=['OPTIONS']))
+    dispatcher.connect('player_get_key_option', '/players/:key', controller = option_controller, action = 'OPTIONS', conditions = dict(method=['OPTIONS']))
+    dispatcher.connect('player_delete_key_option', '/players/:key', controller = option_controller, action = 'OPTIONS', conditions = dict(method=['OPTIONS']))
+    
+    dispatcher.connect('matches_get_option', '/matches/', controller = option_controller, action = 'OPTIONS', conditions = dict(method=['OPTIONS']))
+    dispatcher.connect('matches_get_key_option', '/matches/:key', controller = option_controller, action = 'OPTIONS', conditions = dict(method=['OPTIONS']))
+    dispatcher.connect('matches_post_key_option', '/matches/:key', controller = option_controller, action = 'OPTIONS', conditions = dict(method=['OPTIONS']))
+    dispatcher.connect('matches_delete_key_option', '/matches/:key', controller = option_controller, action = 'OPTIONS', conditions = dict(method=['OPTIONS']))
+    
+    dispatcher.connect('champion_get_option', '/champion/', controller = option_controller, action = 'OPTIONS', conditions = dict(method=['OPTIONS']))
+    dispatcher.connect('champion_post_option', '/champion/', controller = option_controller, action = 'OPTIONS', conditions = dict(method=['OPTIONS']))
+    dispatcher.connect('champion_get_key_option', '/champion/:key', controller = option_controller, action = 'OPTIONS', conditions = dict(method=['OPTIONS']))
+    dispatcher.connect('champion_delete_key_option', '/champion/:key', controller = option_controller, action = 'OPTIONS', conditions = dict(method=['OPTIONS']))
+
+    dispatcher.connect('meta_get_option', '/meta/', controller = option_controller, action = 'OPTIONS', conditions = dict(method=['OPTIONS']))
+    dispatcher.connect('meta_get_key_option', '/meta/:key', controller = option_controller, action = 'OPTIONS', conditions = dict(method=['OPTIONS']))
+    dispatcher.connect('meta_post_key_option', '/meta/:key', controller = option_controller, action = 'OPTIONS', conditions = dict(method=['OPTIONS']))
+    
+    dispatcher.connect('reset_put_option', '/reset/', controller = option_controller, action = 'OPTIONS', conditions = dict(method=['OPTIONS']))
+    dispatcher.connect('reset_put_player_key_option', '/reset/players/:key', controller = option_controller, action = 'OPTIONS', conditions = dict(method=['OPTIONS']))
+    dispatcher.connect('reset_put_matches_key_option', '/reset/matches/:key', controller = option_controller, action = 'OPTIONS', conditions = dict(method=['OPTIONS']))
+    dispatcher.connect('reset_put_champion_key_option', '/reset/champion/:key', controller = option_controller, action = 'OPTIONS', conditions = dict(method=['OPTIONS']))
 
     #set up server
     conf = {'global':
                 {'server.socket_host': 'student04.cse.nd.edu',
                 'server.socket_port': PORT},
-            '/': {'request.dispatch': dispatcher} }
+            '/': {'request.dispatch': dispatcher,
+                'tools.CORS.on': True} }
 
     cherrypy.config.update(conf)
     app = cherrypy.tree.mount(None, config=conf)
@@ -102,4 +137,5 @@ def start_service():
 # Main
 #*******************************************************
 if __name__ == '__main__':
+    cherrypy.tools.CORS = cherrypy.Tool('before_finalize', CORS)
     start_service()
