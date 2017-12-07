@@ -180,14 +180,9 @@ class _league_database():
         ret_dict = {}
 
         for lane_key, lane_val_dict in self.meta.items():               # Loop through meta
-            # Source: https://stackoverflow.com/questions/42044090/return-the-maximum-value-from-a-dictionary
-            max_val = max(lane_val_dict.values())
-            max_keys = [k for k, v in lane_val_dict.items() if v == max_val]  
-            meta_list = sorted(max_keys)
-            ret_dict[lane_key] = [] # make it into a list
-            for i in range(0, num):
-                print(meta_list)
-                ret_dict[lane_key].append(meta_list[i])
+            # Source: http://bytesizebio.net/2013/04/03/stupid-python-tricks-3296-sorting-a-dictionary-by-its-values/
+            meta_list = [(k,v) for v,k in sorted([(v,k) for k,v in lane_val_dict.items()],reverse=True)]
+            ret_dict.update({lane_key:meta_list[0:num]})
         return ret_dict
 
 
@@ -213,12 +208,7 @@ if __name__ == "__main__":
     ldb.load_match_history('data/match_history.csv')
     ldb.determine_meta()
 
-    print('aaaa')
     all_meta = ldb.get_all_meta()
     print(all_meta)
-    print('bbbb')
     n_meta = ldb.get_n_meta(2)
     print(n_meta)
-    print('cccc')
-    # ldb.get_all_meta()
-    # print('aaaa')
