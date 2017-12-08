@@ -24,9 +24,10 @@
       <div class="row">
         <div class="buttons">
           <div class="btn-group btn-group-lg">
-          <button type="button" class="btn btn-danger" onclick="get_meta();">Display Meta</button>
-          <button type="button" class="btn btn-danger" onclick="post_meta_champ_id(1);">Up Vote</button>
-          <button type="button" class="btn btn-danger" onclick="post_meta_champ_id(-1);">Down Vote</button>
+          <button type="button" class="btn btn-danger" onclick="get_meta();">Show Meta</button>
+          <button type="button" class="btn btn-danger" onclick="post_meta_champ_name(1);">Up Vote</button>
+          <button type="button" class="btn btn-danger" onclick="post_meta_champ_name(-1);">Down Vote</button>
+          <button type="button" class="btn btn-danger" onclick="reset_meta();">Reset</button>
           </div>
         </div>
       </div>
@@ -42,21 +43,26 @@
         </select>
       </div>
       <div class="input_text">
-        <label for="usr">Champion ID</label>
-        <input type="text" class="form-control" id="champ_id">
+        <label for="usr">Champion Name</label>
+        <input type="text" class="form-control" id="champ_name">
       </div>
       <div class="row">
         <div class="form-group2">
         <label for="sel1">Lane:</label>
         <select class="form-control" id="sel2">
-          <option>Top</option>
-          <option>Mid</option>
-          <option>Jungle</option>
-          <option>Bot</option>
-        </select>
+          <option>TOP</option>
+          <option>MID</option>
+          <option>JUNGLE</option>
+          <option>BOTTOM</option>
+        </select> 
       </div>
+      <div class="container">
+        <div class="vote" id="round">
+          <h3>Meta Vote:<span class="label label-info" id="new_vote"></span></h3>
+        </div>
+      </div> 
     </div>
-
+    
     <div class="container">
       <div class="title" id="round">
         <h3>League of Legends Meta Geta</h3>
