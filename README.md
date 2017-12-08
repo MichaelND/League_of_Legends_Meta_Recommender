@@ -11,6 +11,7 @@ Date: December 7, 2017
 * Use the available webclient by going to [URL]
 
 
+[Presentation Slides]
 
 ############################################
 # Other Milestones Below                   #
@@ -42,5 +43,6 @@ A link to our GitHub is provided here as well: https://github.com/MichaelND/Para
 
 
 
-[URL]: http://student04.cse.nd.edu/mwang6/league_project
+[URL]:                  http://student04.cse.nd.edu/mwang6/league_project
+[Presentation Slides]:  https://docs.google.com/a/nd.edu/presentation/d/1P8QKXdgGvn9iU21m-O54xSC8SfhTuBFaHyeiWyPwXiA/edit?usp=sharing
 
