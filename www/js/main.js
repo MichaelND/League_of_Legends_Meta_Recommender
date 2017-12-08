@@ -7,7 +7,7 @@ function get_meta() {
 		// var e = document.getElementById("sel1")
 		// var num = e.options[e.selectedIndex].value;
 		for (i = 0; i < 5; i++) {
-			document.getElementById("lane-row" + i).setAttribute("hidden", true)
+			document.getElementById("lane-row" + i).setAttribute("hidden", false)
 			document.getElementById("top" + i).src = "http://ddragon.leagueoflegends.com/cdn/6.24.1/img/champion/" + response["TOP"][i][0] + ".png"
 			// document.getElementById("jg" + i).src = "http://ddragon.leagueoflegends.com/cdn/6.24.1/img/champion/" + response["JUNGLE"][i][0] + ".png"
 			// document.getElementById("mid" + i).src = "http://ddragon.leagueoflegends.com/cdn/6.24.1/img/champion/" + response["MID"][i][0] + ".png"
