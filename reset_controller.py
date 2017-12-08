@@ -21,9 +21,11 @@ class ResetController(object):
 
         # Reset ldb.
         try:
+            self.ldb.delete_all_dictionaries()
             self.ldb.load_players(self.players_path)
             self.ldb.load_champions(self.champions_path)
             self.ldb.load_match_history(self.match_history_path)
+            self.ldb.init_meta()
         except Exception as e:
             output['result'] = 'error'
             output['message'] = str(e)
@@ -41,11 +43,7 @@ class ResetController(object):
         orig_ldb.load_players(self.players_path)
 
         try:
-            print("aaaa")
-            print("aaaabbbb")
             print(orig_ldb.get_player(key))
-            print("aaaacccc")
-
             self.ldb.players[key] = orig_ldb.get_player(key)
         except Exception as e:
             output['result'] = 'error'

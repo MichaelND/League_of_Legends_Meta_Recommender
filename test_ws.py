@@ -231,8 +231,19 @@ class TestWebservice(unittest.TestCase):
         self.assertEqual(resp['BOTTOM'][0], ['Tristana', 370])
 
     def test_meta_post_key(self):
-        pass
+        self.reset_data()
+        champ_name = 'Kennen'
 
+        d = {'lane' : 'TOP', 'meta_vote' : 4}
+
+        # Make POST request
+        r = requests.post(META_URL + str(champ_name), data = json.dumps(d))
+        self.assertTrue(self.is_json(r.content.decode('utf-8')))
+        resp = json.loads(r.content.decode('utf-8'))
+        self.assertEqual(resp['result'], 'success')
+        self.assertEqual(resp['lane'], 'TOP')
+        self.assertEqual(resp['champ_name'], champ_name)
+        self.assertEqual(resp['meta_rating'], 109)
 
 if __name__ == '__main__':
     print('Testing Port number: ', PORT_NUM)

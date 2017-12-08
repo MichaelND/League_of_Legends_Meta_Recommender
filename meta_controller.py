@@ -31,7 +31,6 @@ class MetaController(object):
 
         try:
             output.update(self.ldb.get_n_meta(key))
-            print(output)
         except Exception as e:
             print('Error: ' + str(e))
             output['result'] = 'error'
@@ -40,6 +39,20 @@ class MetaController(object):
     def POST_KEY(self, key):
         #This function will make a request to our webservice to get the meta for a specific lane. 
         output = {'result' : 'success'}
-        key = int(key)
+        key = str(key) # Champion Name
+        
+        dictData = cherrypy.request.body.read().decode()
+        dictData = json.loads(dictData)                     # The dictionary sent by the client
+
+        try:
+            lane = dictData['lane']
+            meta_vote = dictData['meta_vote']
+            output['champ_name'] = key
+            output['lane'] = lane
+            output['meta_rating'] = self.ldb.update_meta_vote(key, lane, meta_vote)
+        except Exception as e:
+            print('Error: ' + str(e))
+            output['result'] = 'error'
         
         return json.dumps(output)
+

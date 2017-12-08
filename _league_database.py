@@ -152,10 +152,23 @@ class _league_database():
     def delete_match_history(self, account_id):
         self.matches.pop(int(account_id))
 
+    def delete_meta(self, champion_name):
+        champion_name = str(champion_name)
+        pop_list = []
+        for k, v in self.meta.items():
+            for champ, rating in v.items():
+                if champ == champion_name:
+                    pop_list.append([k,champ])
+
+        # Loop through list and delete
+        for tup in pop_list:
+            self.meta[tup[0]].pop(tup[1])
+
     def delete_all_dictionaries(self):
         self.players    = {} 
         self.champions  = {}
         self.matches    = {}
+        self.meta       = {}
 
     #- Advanced Functions -------------------------------------#
     def init_meta(self):
@@ -208,9 +221,11 @@ class _league_database():
 
     def update_meta_vote(self, champion_name, lane, meta_vote):
         try:
-            self.meta[lane][champion_name] += int(meta_vote)
+            self.meta[lane][champion_name] += int(meta_vote)  # Update if in lane already
         except Exception as e:
+            self.meta[lane].update({champion_name:1}) # Add to lane if not in
             print('Error' + str(e))
+        return self.meta[lane][champion_name]
 
 
 if __name__ == "__main__":
@@ -220,7 +235,9 @@ if __name__ == "__main__":
     ldb.load_match_history('data/match_history_1m.csv')
     ldb.init_meta()
 
-    all_meta = ldb.get_all_meta()
-    print(all_meta)
-    n_meta = ldb.get_n_meta(2)
-    print(n_meta)
+    # all_meta = ldb.get_all_meta()
+    # print(all_meta)
+    # n_meta = ldb.get_n_meta(2)
+    # print(n_meta)
+
+    # ldb.delete_meta('Kennen')
