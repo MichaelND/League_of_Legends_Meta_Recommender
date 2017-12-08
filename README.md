@@ -1,7 +1,20 @@
 Programmers: Anthony Luc, Michael Wang
 Project: Paradigms Final Project
-Date: November 27, 2017
+Date: December 7, 2017
 
+
+## Milestone 4
+# Steps for Running Entire Project Code
+* Make sure that `data/` folder has three files: champion_1m.csv, match_history_1m.csv, and champion_1m.csv
+* If the files are not there if you want to update the data, run `python3 make_data.py` (you may need to update the Riot API key in it)
+* Begin the webserver by running `python3 main.py`
+* Use the available webclient by going to [URL]
+
+
+
+############################################
+# Other Milestones Below                   #
+############################################
 
 ## Milestone 2
 For this project, we will use League of Legends's API to gather data which will allow users to use our API to vote on which champions they believe are meta for the current season. From the Riot API, we will use our own script to parse data from the top 200 challenger players by their summoner names and then use that data to go through their each of their past 20 games in their match history to see which champions they played. There are three different data files that our scripts generate from the League of Legends Api and they include champions.csv, match_history.csv, and challenger.csv. Champions.csv contains all of the champions and their key. Match_history.csv contains the most recent 20 matches for the top 200 challenger players and which champions they played. Challenger.csv contains the top 200 challenger players and their account info. 
@@ -24,3 +37,10 @@ Ultimately, we want our webservice to improve player's awareness about the curre
 To test our webservice for November 30, simply run python3 test_ws.py. This will send multiple get, put, post, and delete requests to our webservice to show that it works.
 
 A link to our GitHub is provided here as well: https://github.com/MichaelND/ParadigmsFinal
+
+
+
+
+
+[URL]: http://student04.cse.nd.edu/mwang6/league_project
+
