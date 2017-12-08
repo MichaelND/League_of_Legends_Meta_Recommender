@@ -27,12 +27,26 @@
   padding: 20px;
 }
 
+<<<<<<< HEAD
+=======
+/*div.form-group {
+  position: absolute;
+  top: 90px;
+  left: 350px;
+}*/
+>>>>>>> dd61499fcb8f85fdaafc0a477ab9acea7b181a54
 
 div.buttons {
   position: absolute;
   top: 100px;
   left: 14px;
 }
+
+/*div.form-group {
+  position: absolute;
+  top: 90px;
+  left: 340px;
+}*/
 
 div.video {
   position: relative;
