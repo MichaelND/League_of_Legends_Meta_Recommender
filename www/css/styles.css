@@ -27,7 +27,6 @@
   padding: 20px;
 }
 
-
 div.buttons {
   position: absolute;
   top: 100px;
@@ -37,14 +36,11 @@ div.buttons {
 div.video {
   position: relative;
 } 
-div.absolute {
-  position: absolute;
-}
 
 .lane-row1 {
   color: var(--text-color);
   position: absolute;
-  top: 160px;
+  top: 140px;
   left: 14px;
   margin: .825rem .0rem .825rem 0rem;
   padding: .625rem 1.625rem .825rem .4em;
@@ -53,7 +49,7 @@ div.absolute {
 .lane-row2 {
   color: var(--text-color);
   position: absolute;
-  top: 260px;
+  top: 240px;
   left: 14px;
   margin: .825rem .0rem .825rem 0rem;
   padding: .625rem 1.625rem .825rem .4em;
@@ -61,7 +57,7 @@ div.absolute {
 .lane-row3 {
   color: var(--text-color);
   position: absolute;
-  top: 360px;
+  top: 340px;
   left: 14px;
   margin: .825rem .0rem .825rem 0rem;
   padding: .625rem 1.625rem .825rem .4em;
@@ -69,7 +65,7 @@ div.absolute {
 .lane-row4 {
   color: var(--text-color);
   position: absolute;
-  top: 460px;
+  top: 440px;
   left: 14px;
   margin: .825rem .0rem .825rem 0rem;
   padding: .625rem 1.625rem .825rem .4em;
