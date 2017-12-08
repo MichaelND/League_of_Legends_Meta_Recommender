@@ -27,11 +27,23 @@
   padding: 20px;
 }
 
+/*div.form-group {
+  position: absolute;
+  top: 90px;
+  left: 350px;
+}*/
+
 div.buttons {
   position: absolute;
   top: 100px;
   left: 14px;
 }
+
+/*div.form-group {
+  position: absolute;
+  top: 90px;
+  left: 340px;
+}*/
 
 div.video {
   position: relative;
