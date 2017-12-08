@@ -7,13 +7,16 @@ function get_meta() {
 		// var e = document.getElementById("sel1")
 		// var num = e.options[e.selectedIndex].value;
 		for (i = 0; i < 5; i++) {
-			document.getElementById("lane-row" + i).setAttribute("hidden", false)
 			document.getElementById("top" + i).src = "http://ddragon.leagueoflegends.com/cdn/6.24.1/img/champion/" + response["TOP"][i][0] + ".png"
 			// document.getElementById("jg" + i).src = "http://ddragon.leagueoflegends.com/cdn/6.24.1/img/champion/" + response["JUNGLE"][i][0] + ".png"
 			// document.getElementById("mid" + i).src = "http://ddragon.leagueoflegends.com/cdn/6.24.1/img/champion/" + response["MID"][i][0] + ".png"
 			// document.getElementById("bot" + i).src = "http://ddragon.leagueoflegends.com/cdn/6.24.1/img/champion/" + response["BOTTOM"][i][0] + ".png"
 			
 			// document.getElementById("top" + i).innerHTML = response["TOP"][i][0]
+		}
+		// TODO: UPDATE
+		for (i = 1; i < 2; i++) {
+			document.getElementById("lr" + i).style.visibility = "visible"
 		}
 	}
 	request.send(null);
@@ -54,5 +57,3 @@ $(document).ready(function() {
 	v = document.getElementById('video')
 	v.play();
 });
-
-

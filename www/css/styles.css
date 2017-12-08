@@ -27,14 +27,11 @@
   padding: 20px;
 }
 
-<<<<<<< HEAD
-=======
 /*div.form-group {
   position: absolute;
   top: 90px;
   left: 350px;
 }*/
->>>>>>> dd61499fcb8f85fdaafc0a477ab9acea7b181a54
 
 div.buttons {
   position: absolute;
@@ -51,23 +48,21 @@ div.buttons {
 div.video {
   position: relative;
 } 
-div.absolute {
-  position: absolute;
-}
 
 .lane-row1 {
   color: var(--text-color);
   position: absolute;
-  top: 160px;
+  top: 140px;
   left: 14px;
   margin: .825rem .0rem .825rem 0rem;
   padding: .625rem 1.625rem .825rem .4em;
+  visibility: hidden;
 }
 
 .lane-row2 {
   color: var(--text-color);
   position: absolute;
-  top: 260px;
+  top: 240px;
   left: 14px;
   margin: .825rem .0rem .825rem 0rem;
   padding: .625rem 1.625rem .825rem .4em;
@@ -75,7 +70,7 @@ div.absolute {
 .lane-row3 {
   color: var(--text-color);
   position: absolute;
-  top: 360px;
+  top: 340px;
   left: 14px;
   margin: .825rem .0rem .825rem 0rem;
   padding: .625rem 1.625rem .825rem .4em;
@@ -83,10 +78,8 @@ div.absolute {
 .lane-row4 {
   color: var(--text-color);
   position: absolute;
-  top: 460px;
+  top: 440px;
   left: 14px;
   margin: .825rem .0rem .825rem 0rem;
   padding: .625rem 1.625rem .825rem .4em;
 }
-
-
