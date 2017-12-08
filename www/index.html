@@ -24,22 +24,37 @@
       <div class="row">
         <div class="buttons">
           <div class="btn-group btn-group-lg">
-          <button type="button" class="btn btn-danger" onclick="get_meta();">Get Meta</button>
-          <button type="button" class="btn btn-danger" onclick="get_champ_id();">Get Champ ID</button>
-          <button type="button" class="btn btn-danger" onclick="post_meta_champ_id();">Post Meta</button>
+          <button type="button" class="btn btn-danger" onclick="get_meta();">Display Meta</button>
+          <button type="button" class="btn btn-danger" onclick="post_meta_champ_id(1);">Up Vote</button>
+          <button type="button" class="btn btn-danger" onclick="post_meta_champ_id(-1);">Down Vote</button>
           </div>
         </div>
       </div>
-      <!-- <div class="row">
+      <div class="row">
         <div class="form-group">
-        <label for="sel1">Select list (select one):</label>
+        <label for="sel1">Champion Count:</label>
         <select class="form-control" id="sel1">
           <option>1</option>
           <option>2</option>
           <option>3</option>
           <option>4</option>
+          <option>5</option>
         </select>
-      </div> -->
+      </div>
+      <div class="input_text">
+        <label for="usr">Champion ID</label>
+        <input type="text" class="form-control" id="champ_id">
+      </div>
+      <div class="row">
+        <div class="form-group2">
+        <label for="sel1">Lane:</label>
+        <select class="form-control" id="sel2">
+          <option>Top</option>
+          <option>Mid</option>
+          <option>Jungle</option>
+          <option>Bot</option>
+        </select>
+      </div>
     </div>
 
     <div class="container">
@@ -61,6 +76,57 @@
           <img id="top2" class="rounded-circle">
           <img id="top3" class="rounded-circle">
           <img id="top4" class="rounded-circle">
+        </div>
+      </div>
+    </div>
+
+    <div class="lane-row2" id="lr2">
+      <div class="row">
+        <div class="col-sm-1">
+          <div id="round">
+            <h2 class="text-white">Mid <span class="label label-default"></span></h2>
+          </div>
+        </div>
+        <div class="col-sm-11">
+          <img id="mid0" class="rounded-circle">
+          <img id="mid1" class="rounded-circle">
+          <img id="mid2" class="rounded-circle">
+          <img id="mid3" class="rounded-circle">
+          <img id="mid4" class="rounded-circle">
+        </div>
+      </div>
+    </div>
+
+    <div class="lane-row3" id="lr3">
+      <div class="row">
+        <div class="col-sm-1">
+          <div id="round">
+            <h2 class="text-white">Jg <span class="label label-default"></span></h2>
+          </div>
+        </div>
+        <div class="col-sm-11">
+          <img id="jg0" class="rounded-circle">
+          <img id="jg1" class="rounded-circle">
+          <img id="jg2" class="rounded-circle">
+          <img id="jg3" class="rounded-circle">
+          <img id="jg4" class="rounded-circle">
+        </div>
+      </div>
+    </div>
+
+    <div class="lane-row4" id="lr4">
+      <div class="row">
+        <div class="col-sm-1">
+          <div id="round">
+            <h2 class="text-white">Bot <span class="label label-default"></span></h2>
+          </div>
+        </div>
+        <div class="col-sm-11">
+          <img id="bot0" class="rounded-circle">
+          <img id="bot1" class="rounded-circle">
+          <img id="bot2" class="rounded-circle">
+          <img id="bot3" class="rounded-circle">
+          <img id="bot4" class="rounded-circle">
         </div>
       </div>
     </div>
