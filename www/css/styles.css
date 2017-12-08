@@ -13,35 +13,78 @@
 }
 
 #round {
-  border-radius: 25px;
-  -webkit-border-radius: 25px;
-  -moz-border-radius: 25px;
+  border-radius: 20px;
+  -webkit-border-radius: 20px;
+  -moz-border-radius: 20px;
 }
 
 .title {
   background-color: var(--main-color);
   color: var(--text-color);
   position: absolute;
-  top: 30px;
+  top: 10px;
   left: 10px;
-  padding: 30px;
+  padding: 20px;
 }
 
 
 div.buttons {
   position: absolute;
-  top: 200px;
+  top: 100px;
   left: 14px;
 }
 
 div.video {
   position: relative;
 } 
+div.absolute {
+  position: absolute;
+} 
 
+a:hover {
+  display: block;
+}
 
 .lane-row {
   background-color: var(--main-color);
   color: var(--text-color);
+  margin: .900rem .0rem .900rem 0rem;
+  padding: .425rem 1.400rem .425rem .3em;
+}
+
+.lane-row1 {
+  background-color: var(--main-color);
+  color: var(--text-color);
+  position: absolute;
+  top: 160px;
+  left: 14px;
+  margin: .825rem .0rem .825rem 0rem;
+  padding: .625rem 1.625rem .825rem .4em;
+}
+.lane-row2 {
+  background-color: var(--main-color);
+  color: var(--text-color);
+  position: absolute;
+  top: 260px;
+  left: 14px;
+  margin: .825rem .0rem .825rem 0rem;
+  padding: .625rem 1.625rem .825rem .4em;
+}
+.lane-row3 {
+  background-color: var(--main-color);
+  color: var(--text-color);
+  position: absolute;
+  top: 360px;
+  left: 14px;
+  margin: .825rem .0rem .825rem 0rem;
+  padding: .625rem 1.625rem .825rem .4em;
+}
+.lane-row4 {
+  background-color: var(--main-color);
+  color: var(--text-color);
+  position: absolute;
+  top: 460px;
+  left: 14px;
   margin: .825rem .0rem .825rem 0rem;
   padding: .625rem 1.625rem .825rem .4em;
 }

@@ -4,7 +4,14 @@ function get_meta() {
 
 	request.onload = function(e) {
 		var response = JSON.parse(request.responseText);
-		console.log(response["result"])
+		for (i = 0; i < 5; i++) {
+			document.getElementById("top" + i).src = "http://ddragon.leagueoflegends.com/cdn/6.24.1/img/champion/" + response["TOP"][i][0] + ".png"
+			document.getElementById("jg" + i).src = "http://ddragon.leagueoflegends.com/cdn/6.24.1/img/champion/" + response["JUNGLE"][i][0] + ".png"
+			document.getElementById("mid" + i).src = "http://ddragon.leagueoflegends.com/cdn/6.24.1/img/champion/" + response["MID"][i][0] + ".png"
+			document.getElementById("bot" + i).src = "http://ddragon.leagueoflegends.com/cdn/6.24.1/img/champion/" + response["BOTTOM"][i][0] + ".png"
+			
+			document.getElementById("top" + i).innerHTML = response["TOP"][i][0]
+		}
 	}
 	request.send(null);
 }
